@@ -2,65 +2,16 @@
 > galactic-gravity@0.0.1 dev
 > astro dev
 
-18:19:06 [vite] connected.
-18:19:06 [types] Generated 1ms
-18:19:07 [vite] connected.
-18:19:07 [content] Syncing content
-18:19:07 [content] Synced content
-18:19:07 [vite] Re-optimizing dependencies because vite config has changed
- astro  v7.3.5 ready in 1507 ms
+20:17:58 [vite] connected.
+20:17:58 [types] Generated 1ms
+20:17:59 [vite] connected.
+20:17:59 [content] Syncing content
+20:17:59 [content] Synced content
+20:17:59 [vite] Re-optimizing dependencies because vite config has changed
+ astro  v7.3.5 ready in 1636 ms
 ┃ Local    http://localhost:4321/
 ┃ Network  use --host to expose
-18:19:07 watching for file changes...
-18:20:38 [200] /th 173ms
-18:20:39 [200] /th 14ms
-18:20:40 [200] /th/cheatsheet 67ms
-18:20:42 [200] /th 5ms
-18:20:43 [200] /en/ 6ms
-18:20:44 [200] /en/modules/05-load-balancing-route53 66ms
-19:25:13 [vite] program reload
-19:25:13 [glob-loader] Reloaded data from en/01-compute-ec2.md
-19:25:13 [glob-loader] Reloaded data from en/02-storage-s3.md
-19:25:13 [glob-loader] Reloaded data from en/05-load-balancing-route53.md
-19:25:15 [vite] program reload
-19:25:15 [vite] program reload
-19:26:03 [watch] /src/styles/global.css
-19:26:41 [watch] /src/styles/global.css
-19:27:16 [watch] /src/styles/global.css
-19:28:36 [vite] program reload
-19:28:36 [glob-loader] Reloaded data from en/01-compute-ec2.md
-19:28:36 [glob-loader] Reloaded data from en/02-storage-s3.md
-19:28:36 [glob-loader] Reloaded data from en/05-load-balancing-route53.md
-19:28:36 [glob-loader] Reloaded data from en/01-compute-ec2.md
-19:28:37 [vite] program reload
-19:28:37 [vite] program reload
-19:28:37 [vite] program reload
-19:29:47 [glob-loader] Reloaded data from th/03-networking-vpc.md
-19:29:47 [glob-loader] Reloaded data from th/03-networking-vpc.md
-19:29:47 [glob-loader] Reloaded data from th/04-databases.md
-19:29:47 [glob-loader] Reloaded data from th/06-security-iam.md
-19:29:47 [glob-loader] Reloaded data from th/07-serverless-lambda.md
-19:29:47 [glob-loader] Reloaded data from th/08-integration-sqs.md
-19:30:13 [vite] program reload
-19:30:14 [glob-loader] Reloaded data from en/01-compute-ec2.md
-19:30:14 [glob-loader] Reloaded data from en/02-storage-s3.md
-19:30:14 [glob-loader] Reloaded data from en/05-load-balancing-route53.md
-19:30:14 [glob-loader] Reloaded data from en/03-networking-vpc.md
-19:30:14 [glob-loader] Reloaded data from en/04-databases.md
-19:30:14 [glob-loader] Reloaded data from en/06-security-iam.md
-19:30:14 [glob-loader] Reloaded data from en/07-serverless-lambda.md
-19:30:14 [glob-loader] Reloaded data from en/08-integration-sqs.md
-19:30:14 [glob-loader] Reloaded data from en/01-compute-ec2.md
-19:30:14 [glob-loader] Reloaded data from en/03-networking-vpc.md
-19:30:14 [glob-loader] Reloaded data from en/04-databases.md
-19:30:14 [vite] program reload
-19:30:14 [vite] program reload
-19:30:14 [vite] program reload
-19:32:02 [200] /th 106ms
-19:32:02 [200] /th 10ms
-19:32:04 [200] /th/modules 42ms
-19:32:05 [200] /th/modules/01-compute-ec2 57ms
-19:33:06 [200] /th 12ms
-19:33:08 [200] /th/modules/01-compute-ec2 6ms
-19:33:50 [200] /th 6ms
-19:33:51 [200] /th/modules/01-compute-ec2 5ms
+20:17:59 watching for file changes...
+20:18:23 [200] /th 193ms
+20:18:24 [200] /th 5ms
+20:18:25 [200] /th/modules/01-compute-ec2 45ms

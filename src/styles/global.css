@@ -1,4 +1,6 @@
 @import "tailwindcss";
+@plugin "@tailwindcss/typography";
+@variant dark (&:where(.dark, .dark *));
 
 @theme {
   --color-aws-orange: #FF9900;
@@ -12,11 +14,9 @@
   --foreground: #171717;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+.dark {
+  --background: #0a0a0a;
+  --foreground: #ededed;
 }
 
 body {
@@ -24,4 +24,3 @@ body {
   background: var(--background);
   font-family: Arial, Helvetica, sans-serif;
 }
-@plugin "@tailwindcss/typography";
