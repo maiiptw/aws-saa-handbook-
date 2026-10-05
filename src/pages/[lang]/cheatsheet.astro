@@ -1,0 +1,32 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import CheatsheetSearch from '../../components/interactive/CheatsheetSearch';
+import cheatsheetData from '../../data/cheatsheet.json';
+
+export function getStaticPaths() {
+  return [
+    { params: { lang: 'th' } },
+    { params: { lang: 'en' } },
+  ];
+}
+
+const { lang } = Astro.params;
+const isEn = lang === 'en';
+---
+
+<BaseLayout title={isEn ? "Exam Cheatsheet" : "สรุปจุดหลอกสอบ"} lang={lang}>
+  <div class="max-w-5xl mx-auto py-8">
+    <div class="mb-10 text-center">
+      <h1 class="text-4xl font-extrabold text-gray-900 dark:text-white mb-4">
+        {isEn ? "Exam Traps & Decision Matrices" : "สรุปจุดหลอกสอบ & คีย์เวิร์ดสำคัญ"}
+      </h1>
+      <p class="text-lg text-gray-500">
+        {isEn
+          ? "Search across all modules to quickly review tricky scenarios."
+          : "ค้นหาจุดหลอกสอบที่พบบ่อยและคีย์เวิร์ดที่ใช้ในการตัดสินใจเลือกคำตอบที่ถูกต้อง"}
+      </p>
+    </div>
+
+    <CheatsheetSearch client:load data={cheatsheetData} lang={lang} />
+  </div>
+</BaseLayout>

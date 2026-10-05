@@ -1,0 +1,108 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+const { frontmatter, headings, lang = 'th' } = Astro.props;
+const isEn = lang === 'en';
+
+// Fetch all modules to calculate prev/next navigation
+const allModules = await getCollection('modules');
+const modules = allModules
+  .filter(mod => mod.id.startsWith(`${lang}/`))
+  .sort((a, b) => a.data.moduleNumber - b.data.moduleNumber);
+
+const currentIndex = modules.findIndex(mod => mod.data.moduleNumber === frontmatter.moduleNumber);
+const prevModule = currentIndex > 0 ? modules[currentIndex - 1] : null;
+const nextModule = currentIndex < modules.length - 1 ? modules[currentIndex + 1] : null;
+
+// Helper to get pure slug
+const getPureSlug = (id: string) => {
+  const parts = id.split('/');
+  return parts[parts.length - 1].replace('.md', '');
+};
+---
+
+<BaseLayout title={frontmatter.title} lang={lang}>
+
+  <!-- Reading Progress Bar -->
+  <div class="fixed top-16 left-0 w-full h-1 bg-gray-200 dark:bg-gray-800 z-40">
+    <div class="h-1 bg-aws-orange w-0 transition-all duration-150" id="reading-progress"></div>
+  </div>
+
+  <div class="flex flex-col md:flex-row gap-8 relative mt-4">
+    <div class="w-full md:w-3/4 max-w-4xl prose dark:prose-invert prose-orange lg:prose-lg">
+      <div class="mb-8 pb-8 border-b border-gray-200 dark:border-gray-800">
+        <div class="flex items-center gap-2 mb-4">
+          <span class="px-3 py-1 bg-aws-orange text-white text-sm font-bold rounded-full">Module {frontmatter.moduleNumber}</span>
+          <span class="text-sm text-gray-500">Last updated: {new Date(frontmatter.lastUpdated).toLocaleDateString()}</span>
+        </div>
+        <h1 class="text-4xl font-extrabold tracking-tight text-gray-900 dark:text-white mb-4">{frontmatter.title}</h1>
+        <p class="text-xl text-gray-500">{frontmatter.description}</p>
+        <div class="flex gap-2 mt-4">
+          {frontmatter.tags.map((tag: string) => (
+            <span class="px-2 py-1 bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 rounded text-xs">#{tag}</span>
+          ))}
+        </div>
+      </div>
+
+      <slot />
+
+      <!-- Prev/Next Navigation -->
+      <div class="mt-16 pt-8 border-t border-gray-200 dark:border-gray-800 flex flex-col sm:flex-row justify-between gap-4 not-prose">
+        {prevModule ? (
+          <a href={`/${lang}/modules/${getPureSlug(prevModule.id)}`} class="flex flex-col p-4 border border-gray-200 dark:border-gray-800 rounded-lg hover:border-aws-orange dark:hover:border-aws-orange transition-colors group flex-1 text-left">
+            <span class="text-sm text-gray-500 mb-1">&larr; {isEn ? 'Previous Module' : 'บทเรียนก่อนหน้า'}</span>
+            <span class="font-bold text-gray-900 dark:text-white group-hover:text-aws-orange transition-colors line-clamp-1">{prevModule.data.title}</span>
+          </a>
+        ) : (
+          <div class="flex-1"></div>
+        )}
+
+        {nextModule ? (
+          <a href={`/${lang}/modules/${getPureSlug(nextModule.id)}`} class="flex flex-col p-4 border border-gray-200 dark:border-gray-800 rounded-lg hover:border-aws-orange dark:hover:border-aws-orange transition-colors group flex-1 text-right">
+            <span class="text-sm text-gray-500 mb-1">{isEn ? 'Next Module' : 'บทเรียนถัดไป'} &rarr;</span>
+            <span class="font-bold text-gray-900 dark:text-white group-hover:text-aws-orange transition-colors line-clamp-1">{nextModule.data.title}</span>
+          </a>
+        ) : (
+          <div class="flex-1"></div>
+        )}
+      </div>
+
+      <div class="mt-8 flex justify-center not-prose">
+        <a href={`/${lang}/modules`} class="text-aws-orange font-semibold hover:underline text-sm flex items-center gap-2">
+           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path></svg>
+           {isEn ? 'View all modules' : 'ดูเนื้อหาทั้งหมด'}
+        </a>
+      </div>
+    </div>
+
+    <!-- Sticky TOC -->
+    <aside class="hidden md:block w-1/4">
+      <div class="sticky top-24 p-6 bg-gray-50 dark:bg-gray-900 rounded-xl border border-gray-100 dark:border-gray-800">
+        <h3 class="text-sm font-bold uppercase tracking-wider text-gray-500 mb-4">On this page</h3>
+        <ul class="space-y-2 text-sm">
+          {headings && headings.filter((h: any) => h.depth <= 3).map((heading: any) => (
+            <li class={`${heading.depth === 3 ? 'ml-4' : ''}`}>
+              <a href={`#${heading.slug}`} class="text-gray-600 dark:text-gray-400 hover:text-aws-orange transition-colors block py-1">
+                {heading.text}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </aside>
+  </div>
+
+  <script is:inline>
+    // Reading Progress Bar Logic
+    window.addEventListener('scroll', () => {
+      const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+      const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      const scrolled = (winScroll / height) * 100;
+      const progressBar = document.getElementById('reading-progress');
+      if(progressBar) {
+        progressBar.style.width = scrolled + '%';
+      }
+    });
+  </script>
+</BaseLayout>

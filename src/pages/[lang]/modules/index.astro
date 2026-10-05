@@ -1,0 +1,46 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+
+export function getStaticPaths() {
+  return [
+    { params: { lang: 'th' } },
+    { params: { lang: 'en' } },
+  ];
+}
+
+const { lang } = Astro.params;
+const isEn = lang === 'en';
+
+const allModules = await getCollection('modules');
+const modules = allModules
+  .filter(mod => mod.id.startsWith(`${lang}/`))
+  .sort((a, b) => a.data.moduleNumber - b.data.moduleNumber);
+---
+
+<BaseLayout title={isEn ? "All Modules" : "เนื้อหาทั้งหมด"} lang={lang}>
+  <div class="max-w-4xl mx-auto">
+    <h1 class="text-4xl font-extrabold mb-8">{isEn ? "All Modules" : "เนื้อหาทั้งหมด"}</h1>
+    <div class="space-y-6">
+      {modules.map((mod) => {
+        // Because id format in astro 5 content collections with glob can be something like 'th/01-compute-ec2.md' or just the filename depending on the loader.
+        // We will just use the exact id from content collection and replace any .md extension for the slug.
+        const idParts = mod.id.split('/');
+        const slugEnd = idParts[idParts.length - 1].replace('.md', '');
+
+        return (
+        <a href={`/${lang}/modules/${slugEnd}`} class="block p-6 bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 hover:border-aws-orange transition-all shadow-sm">
+          <div class="flex items-center gap-4">
+            <div class="flex-shrink-0 w-12 h-12 bg-aws-orange text-white rounded-lg flex items-center justify-center text-xl font-bold">
+              {mod.data.moduleNumber}
+            </div>
+            <div>
+              <h2 class="text-2xl font-bold">{mod.data.title}</h2>
+              <p class="text-gray-500 mt-1">{mod.data.description}</p>
+            </div>
+          </div>
+        </a>
+      )})}
+    </div>
+  </div>
+</BaseLayout>

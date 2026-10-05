@@ -1,0 +1,39 @@
+---
+import { getCollection, render } from 'astro:content';
+import ModuleLayout from '../../../layouts/ModuleLayout.astro';
+import AlbFailoverSim from '../../../components/interactive/AlbFailoverSim';
+
+export async function getStaticPaths() {
+  const modules = await getCollection('modules');
+
+  return modules.map(entry => {
+    const [lang, slug] = entry.id.split('/');
+    // Extract base slug without extension
+    const baseSlug = slug.replace('.md', '').replace('.mdx', '');
+
+    return {
+      params: { lang, slug: baseSlug },
+      props: { entry },
+    };
+  });
+}
+
+const { entry } = Astro.props;
+const { lang } = Astro.params;
+const { Content, headings } = await render(entry);
+
+// Special condition to render the interactive component in the Route53/ALB module
+const isLoadBalancingModule = entry.id.includes('05-load-balancing-route53');
+---
+
+<ModuleLayout frontmatter={entry.data} headings={headings} lang={lang}>
+  <Content />
+
+  {isLoadBalancingModule && (
+    <div class="mt-8">
+      <h2 id="interactive-simulation">Interactive Simulation</h2>
+      <p>Test the ALB failover behavior by simulating an Availability Zone outage below:</p>
+      <AlbFailoverSim client:visible />
+    </div>
+  )}
+</ModuleLayout>
