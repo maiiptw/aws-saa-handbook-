@@ -1,6 +1,7 @@
 ---
 import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import ModuleCardList from '../../components/ui/ModuleCardList';
 
 export function getStaticPaths() {
   return [
@@ -19,6 +20,19 @@ const modules = allModules
 
 const firstModIdParts = modules[0] ? modules[0].id.split('/') : [];
 const firstModSlug = firstModIdParts.length > 0 ? firstModIdParts[firstModIdParts.length - 1].replace('.md', '') : '';
+
+// Map to plain objects to pass to React component
+const mappedModules = modules.map(mod => {
+  const idParts = mod.id.split('/');
+  return {
+    slug: idParts[idParts.length - 1].replace('.md', ''),
+    lang: idParts[0],
+    moduleNumber: mod.data.moduleNumber,
+    title: mod.data.title,
+    description: mod.data.description,
+    tags: mod.data.tags,
+  }
+});
 ---
 
 <BaseLayout title="Home" lang={lang}>
@@ -42,55 +56,6 @@ const firstModSlug = firstModIdParts.length > 0 ? firstModIdParts[firstModIdPart
   </div>
 
   <div class="mt-16">
-    <div class="flex items-center justify-between mb-8">
-      <h2 class="text-3xl font-bold">{isEn ? 'Course Modules' : 'เนื้อหาบทเรียน'}</h2>
-      <div class="text-sm font-medium text-gray-500">
-        <span class="text-aws-orange font-bold">0</span> / {modules.length} {isEn ? 'completed' : 'เรียนจบแล้ว'}
-      </div>
-    </div>
-
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-      {modules.map((mod, index) => {
-        const idParts = mod.id.split('/');
-        const modSlug = idParts[idParts.length - 1].replace('.md', '');
-
-        // Mock progress for demonstration (e.g. first 2 modules are complete)
-        const isComplete = index < 2;
-        const progressPercent = isComplete ? 100 : (index === 2 ? 45 : 0);
-
-        return (
-        <a href={`/${lang}/modules/${modSlug}`} class="group flex flex-col p-6 bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-800 hover:border-aws-orange dark:hover:border-aws-orange transition-all shadow-sm hover:shadow-md relative overflow-hidden">
-
-          <div class="flex items-center justify-between mb-4">
-            <span class="w-8 h-8 rounded-full bg-aws-light-blue dark:bg-blue-900/30 text-aws-blue dark:text-blue-400 flex items-center justify-center font-bold text-sm">
-              {mod.data.moduleNumber}
-            </span>
-            {isComplete && (
-              <span class="text-green-500 bg-green-50 dark:bg-green-900/20 p-1 rounded-full">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
-              </span>
-            )}
-          </div>
-          <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2 group-hover:text-aws-orange transition-colors">{mod.data.title}</h3>
-          <p class="text-gray-500 text-sm flex-grow mb-4">{mod.data.description}</p>
-
-          <div class="mt-auto">
-            <div class="flex flex-wrap gap-2 mb-4">
-              {mod.data.tags.map(tag => (
-                <span class="px-2 py-1 bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 text-xs rounded-md">
-                  {tag}
-                </span>
-              ))}
-            </div>
-
-            <!-- Module Progress Bar -->
-            <div class="w-full bg-gray-100 dark:bg-gray-800 rounded-full h-1.5 mb-1">
-              <div class={`h-1.5 rounded-full ${isComplete ? 'bg-green-500' : 'bg-aws-orange'}`} style={`width: ${progressPercent}%`}></div>
-            </div>
-            <div class="text-right text-xs text-gray-400">{progressPercent}%</div>
-          </div>
-        </a>
-      )})}
-    </div>
+    <ModuleCardList client:load modules={mappedModules} lang={lang} isEn={isEn} />
   </div>
 </BaseLayout>

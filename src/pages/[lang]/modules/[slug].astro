@@ -23,7 +23,7 @@ const { lang } = Astro.params;
 const { Content, headings } = await render(entry);
 
 // Special condition to render the interactive component in the Route53/ALB module
-const isLoadBalancingModule = entry.id.includes('05-load-balancing-route53');
+const isLoadBalancingModule = entry.id.includes('02-compute-scaling-and-load-balancing');
 ---
 
 <ModuleLayout frontmatter={entry.data} headings={headings} lang={lang}>
