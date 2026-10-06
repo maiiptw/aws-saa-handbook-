@@ -1,52 +1,52 @@
 ---
-title: "AWS SAA Module 8 - Monitoring, Governance and Operations"
+title: "AWS SAA บทที่ 8 - การตรวจสอบ การกำกับดูแล และการปฏิบัติงาน"
 moduleNumber: 8
-description: "Master CloudWatch, CloudTrail, AWS Config, Systems Manager, and Organizations for effective monitoring, auditing, and governance."
+description: "เชี่ยวชาญการใช้ CloudWatch, CloudTrail, AWS Config, Systems Manager และ Organizations เพื่อตรวจสอบ ประเมินผล และกำกับดูแลสภาพแวดล้อม AWS"
 tags: ["CloudWatch", "CloudTrail", "AWS Config", "Organizations", "Governance"]
 lastUpdated: 2024-03-01
 ---
 
-# Monitoring, Governance, and Operations
+# การตรวจสอบ การกำกับดูแล และการปฏิบัติงาน
 
-Maintaining visibility into your AWS environment is essential for optimizing performance, ensuring security compliance, and controlling costs.
+การรักษาการมองเห็น (Visibility) ในสภาพแวดล้อม AWS เป็นสิ่งสำคัญอย่างยิ่ง เพื่อช่วยเพิ่มประสิทธิภาพสูงสุด, รักษาระเบียบข้อบังคับด้านความปลอดภัย และควบคุมต้นทุนต่างๆ
 
-## Monitoring and Logging
+## การตรวจสอบและการบันทึกล็อก (Monitoring and Logging)
 
 ### Amazon CloudWatch
-Monitors AWS resources and applications in real-time.
-- **Metrics**: Data about the performance of your systems (e.g., CPU utilization, Network In/Out).
-- **Alarms**: Watch a single metric over a specified time period and perform actions (e.g., trigger ASG scaling, send SNS notification).
-- **Logs**: Centralized repository for application and OS log files (e.g., from EC2 instances, Lambda functions).
-- **Events (EventBridge)**: Delivers a near real-time stream of system events that describe changes in AWS resources.
+ใช้ตรวจสอบทรัพยากรและแอปพลิเคชัน AWS แบบเรียลไทม์
+- **Metrics**: ข้อมูลเกี่ยวกับประสิทธิภาพของระบบ (เช่น ปริมาณการใช้งาน CPU, ข้อมูล Network เข้า/ออก)
+- **Alarms**: จับตาดูเมทริกซ์ในช่วงเวลาที่กำหนดและดำเนินการตามเงื่อนไข (เช่น เรียกให้ ASG ปรับเพิ่มเครื่อง, ส่งข้อความแจ้งเตือนทาง SNS)
+- **Logs**: เป็นที่เก็บศูนย์กลางสำหรับบันทึกการทำงานของแอปพลิเคชันและ OS (เช่น ล็อกของ EC2, ข้อมูลจาก Lambda)
+- **Events (EventBridge)**: ส่งข้อมูลอีเวนต์ในระบบให้เกือบเรียลไทม์ เพื่ออธิบายถึงการเปลี่ยนแปลงในทรัพยากร AWS
 
 ### AWS CloudTrail
-Enables governance, compliance, operational auditing, and risk auditing of your AWS account.
-- Records API calls made on your account (who made the call, when, from which IP, and what was affected).
-- Crucial for security investigations and troubleshooting "who did what".
-- **CloudTrail Insights**: Helps users identify and respond to unusual activity associated with API calls and API error rates.
+บริการที่ใช้สำหรับการกำกับดูแล, การปฏิบัติตามข้อกำหนด, ตรวจสอบการดำเนินการ และประเมินความเสี่ยงบัญชี AWS ของคุณ
+- บันทึกประวัติ API Calls ที่ถูกเรียกใช้งานในบัญชีของคุณ (ใครเป็นคนเรียกใช้ เรียกใช้เมื่อไหร่ จากไอพีอะไร และมีทรัพยากรไหนได้รับผลกระทบ)
+- มีความสำคัญต่อการสืบสวนด้านความปลอดภัยและการแก้ปัญหาแบบ "ใครทำอะไร"
+- **CloudTrail Insights**: ช่วยผู้ใช้ระบุและตอบสนองต่อกิจกรรมที่ผิดปกติซึ่งเชื่อมโยงกับการเรียกใช้งาน API และอัตราความผิดพลาดของ API
 
-## Governance and Compliance
+## การกำกับดูแลและการปฏิบัติตามข้อกำหนด (Governance and Compliance)
 
 ### AWS Config
-Service that enables you to assess, audit, and evaluate the configurations of your AWS resources.
-- Continuously monitors and records resource configurations.
-- Allows you to automate the evaluation of recorded configurations against desired configurations (e.g., "Are all my S3 buckets private?", "Are all EBS volumes encrypted?").
-- Helpful for maintaining compliance standards (HIPAA, PCI-DSS).
+บริการที่ช่วยให้คุณประเมิน ตรวจสอบ และติดตามการตั้งค่า (Configurations) ของทรัพยากร AWS
+- ตรวจสอบและบันทึกข้อมูลคอนฟิกของทรัพยากรอย่างต่อเนื่อง
+- อนุญาตให้กำหนดกระบวนการประเมินสถานะอัตโนมัติ (เช่น "S3 buckets ทุกอันถูกตั้งเป็น Private หรือไม่?", "EBS ทุกอันมีการเข้ารหัสหรือไม่?")
+- มีประโยชน์มากสำหรับการดูแลให้ระบบเป็นไปตามมาตรฐานการปฏิบัติตามข้อบังคับต่างๆ เช่น HIPAA, PCI-DSS
 
 ### AWS Organizations
-Account management service that enables you to consolidate multiple AWS accounts into an organization that you create and centrally manage.
-- Consolidates billing across all accounts to leverage volume discounts.
-- **Service Control Policies (SCPs)**: Centralized control over the maximum available permissions for all accounts in your organization, overriding even administrator permissions within those accounts.
+บริการจัดการบัญชีผู้ใช้งานที่ช่วยให้คุณรวม AWS accounts หลายๆ บัญชีเข้าด้วยกันเป็นองค์กรเดียวกัน และจัดการได้จากส่วนกลาง
+- รวมใบเสร็จการชำระเงินของบัญชีทั้งหมด (Consolidated billing) เพื่อใช้ประโยชน์จากส่วนลดแบบใช้เยอะลดเยอะ
+- **Service Control Policies (SCPs)**: ช่วยควบคุมสิทธิ์สูงสุดที่สามารถใช้งานได้จากส่วนกลาง โดยจะบังคับใช้ครอบคลุมทุกบัญชีในองค์กร และจะอยู่เหนือสิทธิ์ของแอดมินในบัญชีเหล่านั้น
 
-## Operations
+## การปฏิบัติการ (Operations)
 
 ### AWS Systems Manager (SSM)
-Provides a unified user interface so you can view operational data from multiple AWS services and allows you to automate operational tasks across your AWS resources.
-- **Run Command**: Safely manage the configuration of your managed instances at scale without needing SSH access or bastion hosts.
-- **Patch Manager**: Automates the process of patching managed instances with both security related and other types of updates.
-- **Parameter Store**: Provides secure, hierarchical storage for configuration data management and secrets management (passwords, database strings).
+เครื่องมือที่ช่วยให้มี UI กลางที่ให้คุณสามารถดูข้อมูลการทำงานต่างๆ ของทรัพยากร AWS และทำให้กระบวนการดำเนินการต่างๆ กับทรัพยากร AWS เป็นแบบอัตโนมัติ
+- **Run Command**: จัดการตั้งค่าเซิร์ฟเวอร์แบบสเกลได้อย่างปลอดภัย โดยไม่จำเป็นต้องใช้ SSH หรือตั้ง Bastion hosts
+- **Patch Manager**: ทำขั้นตอนการอัปเดตระบบแบบอัตโนมัติ สำหรับจัดการแพตช์ระบบปฏิบัติการทั้งด้านความปลอดภัยและการอัปเดตประเภทอื่นๆ
+- **Parameter Store**: เป็นพื้นที่จัดเก็บข้อมูลการตั้งค่าและจัดการความลับ (เช่น รหัสผ่าน ข้อมูลการเชื่อมต่อฐานข้อมูล) อย่างปลอดภัยแบบเป็นลำดับชั้น
 
-## Exam Traps
-- **CloudWatch vs CloudTrail**: CloudWatch is for *performance* monitoring (metrics, logs, alarms). CloudTrail is for *auditing* API calls ("who did what").
-- **AWS Config vs CloudTrail**: Config records the *state/configuration* of a resource over time. CloudTrail records the *API call* that caused the change.
-- **Parameter Store vs Secrets Manager**: Both store secrets, but Secrets Manager has built-in capability for automatic rotation of database credentials (e.g., RDS) out of the box. Parameter Store is typically cheaper for simple key-value configuration data.
+## จุดหลอกข้อสอบ (Exam Traps)
+- **CloudWatch vs CloudTrail**: CloudWatch ใช้ตรวจสอบ *ประสิทธิภาพการทำงาน* (เช่น metrics, logs, alarms) ในขณะที่ CloudTrail ใช้สำหรับการ *ตรวจสอบประวัติ (Auditing)* ของการเรียกใช้ API (เช่น "ใครทำอะไรกับระบบ")
+- **AWS Config vs CloudTrail**: Config บันทึก *สถานะ/การตั้งค่า* ของทรัพยากรที่เปลี่ยนแปลงไปตามช่วงเวลา ส่วน CloudTrail บันทึก *API call* ที่เป็นเหตุให้เกิดการเปลี่ยนแปลง
+- **Parameter Store vs Secrets Manager**: ทั้งคู่สามารถใช้เก็บรหัสความลับได้ แต่ Secrets Manager มีฟีเจอร์ในตัวสำหรับสร้างการหมุนเวียนรหัสผ่าน (Automatic rotation) สำหรับฐานข้อมูล (เช่น RDS) ได้ทันที ส่วน Parameter Store มักจะมีราคาถูกกว่าและเหมาะกับข้อมูลตั้งค่าแบบ Key-Value ธรรมดา

@@ -1,38 +1,38 @@
 ---
-title: "AWS SAA Module 6 - Security, Identity and Compliance"
+title: "AWS SAA บทที่ 6 - ความปลอดภัย ตัวตน และการปฏิบัติตามข้อกำหนด"
 moduleNumber: 6
-description: "Implement robust security controls with IAM, KMS, WAF, Shield, GuardDuty, and Security Hub to protect AWS environments."
+description: "ใช้งานระบบความปลอดภัยที่แข็งแกร่งด้วย IAM, KMS, WAF, Shield, GuardDuty และ Security Hub เพื่อปกป้องสภาพแวดล้อม AWS"
 tags: ["IAM", "KMS", "WAF", "GuardDuty", "Security"]
 lastUpdated: 2024-03-01
 ---
 
-# Security, Identity, and Compliance
+# ความปลอดภัย ตัวตน และการปฏิบัติตามข้อกำหนด (Security, Identity, and Compliance)
 
-Security is the highest priority in AWS (Job Zero). The Shared Responsibility Model dictates that AWS is responsible for the security *of* the cloud, while the customer is responsible for security *in* the cloud.
+ความปลอดภัยเป็นเรื่องสำคัญอันดับแรกสุดบน AWS (เรียกว่า Job Zero) แบบจำลองความรับผิดชอบร่วมกัน (Shared Responsibility Model) กำหนดว่า AWS รับผิดชอบในส่วน **ความปลอดภัยของระบบคลาวด์ (Security OF the cloud)** ในขณะที่ลูกค้าต้องรับผิดชอบในส่วน **ความปลอดภัยภายในระบบคลาวด์ (Security IN the cloud)**
 
 ## Identity and Access Management (IAM)
-Manages access to AWS services and resources securely.
-- **Users**: Individuals or applications needing access to AWS.
-- **Groups**: Collections of IAM users (simplifies permission management).
-- **Roles**: Identities with specific permissions, assumable by users, applications, or AWS services (e.g., granting an EC2 instance access to S3). **Never store long-term credentials on EC2 instances; always use Roles.**
-- **Policies**: JSON documents attached to identities (identity-based) or resources (resource-based) defining allowed/denied actions.
-- Principle of Least Privilege: Grant only the permissions required to perform a task.
+จัดการการเข้าถึงบริการและทรัพยากรของ AWS อย่างปลอดภัย
+- **Users (ผู้ใช้)**: บุคคล หรือ แอปพลิเคชัน ที่จำเป็นต้องเข้าถึง AWS
+- **Groups (กลุ่ม)**: คอลเล็กชันของ IAM Users (ช่วยให้ง่ายต่อการกำหนดสิทธิ์)
+- **Roles (บทบาท)**: ข้อมูลประจำตัวที่มีสิทธิ์เฉพาะ ซึ่งผู้ใช้ แอปพลิเคชัน หรือบริการ AWS สามารถเรียกใช้หรือสวมบทบาทได้ (เช่น การอนุญาตให้ EC2 เข้าถึง S3) **ห้ามเก็บข้อมูลประจําตัวระยะยาว (Credentials) ไว้บน EC2 instances ให้ใช้ Roles เสมอ**
+- **Policies (นโยบาย)**: เอกสาร JSON ที่แนบกับ Users/Roles (Identity-based) หรือ แหล่งทรัพยากร (Resource-based) เพื่อกำหนดการกระทำที่ได้รับอนุญาต/ถูกปฏิเสธ
+- กฎแห่งสิทธิ์ขั้นต่ำ (Principle of Least Privilege): ให้สิทธิ์เฉพาะเท่าที่จำเป็นสำหรับการทำงานเท่านั้น
 
-## Data Protection and Encryption
-- **AWS KMS (Key Management Service)**: Managed service for creating and controlling cryptographic keys used to encrypt data.
-- **AWS CloudHSM**: Cloud-based hardware security module (HSM) for managing encryption keys, providing dedicated, single-tenant, FIPS 140-2 Level 3 validated hardware. (Customer has exclusive control over the keys, unlike KMS).
-- **Amazon Macie**: Uses machine learning to discover, classify, and protect sensitive data (e.g., PII) stored in S3.
+## การป้องกันข้อมูล และการเข้ารหัส
+- **AWS KMS (Key Management Service)**: บริการที่ช่วยในการสร้าง ควบคุมและจัดการคีย์การเข้ารหัสที่ใช้ในการเข้ารหัสข้อมูล
+- **AWS CloudHSM**: ฮาร์ดแวร์เก็บรักษาความปลอดภัยที่อิงบนคลาวด์ สำหรับจัดการคีย์เข้ารหัส ที่ให้ฮาร์ดแวร์ที่ได้รับการตรวจสอบมาตรฐาน FIPS 140-2 ระดับ 3 ซึ่งคุณใช้งานคนเดียว (Single-tenant) (ลูกค้าสามารถควบคุมฮาร์ดแวร์และคีย์ได้อย่างสมบูรณ์แบบ แตกต่างจาก KMS)
+- **Amazon Macie**: ใช้ Machine Learning ในการค้นหา จำแนก และปกป้องข้อมูลที่ละเอียดอ่อน (เช่น ข้อมูลส่วนบุคคล PII) ที่เก็บไว้ใน S3
 
-## Network and Application Security
-- **AWS WAF (Web Application Firewall)**: Protects web applications against common web exploits (SQL injection, Cross-Site Scripting) that could affect availability, compromise security, or consume excessive resources.
-- **AWS Shield**: Managed DDoS protection service. (Shield Standard is free; Shield Advanced provides enhanced protection for specific resources).
-- **AWS Network Firewall**: Managed network firewall and intrusion detection/prevention service for VPCs.
+## ความปลอดภัยของเครือข่าย และแอปพลิเคชัน
+- **AWS WAF (Web Application Firewall)**: ปกป้องเว็บแอปพลิเคชันจากภัยคุกคามทางเว็บที่พบบ่อย (เช่น SQL injection, Cross-Site Scripting) ที่อาจส่งผลต่อความพร้อมใช้งาน หรือใช้ทรัพยากรมากเกินไป
+- **AWS Shield**: บริการป้องกัน DDoS แบบ Managed (Shield Standard ใช้งานได้ฟรี; ส่วน Shield Advanced จะให้การป้องกันที่ดียิ่งขึ้นกับทรัพยากรที่เฉพาะเจาะจง)
+- **AWS Network Firewall**: ไฟร์วอลล์และบริการตรวจจับ/ป้องกันการบุกรุกที่มีการจัดการ สำหรับเครือข่าย VPC โดยรวม
 
-## Threat Detection and Monitoring
-- **Amazon GuardDuty**: Threat detection service that continuously monitors for malicious activity and unauthorized behavior (analyzes VPC Flow Logs, CloudTrail logs, DNS logs).
-- **AWS Security Hub**: Provides a comprehensive view of your security state across AWS and helps check compliance against security industry standards and best practices.
+## การตรวจจับภัยคุกคามและการเฝ้าระวัง
+- **Amazon GuardDuty**: บริการตรวจจับภัยคุกคามที่จะตรวจสอบกิจกรรมที่เป็นอันตราย หรือพฤติกรรมที่ไม่ได้รับอนุญาตอย่างต่อเนื่อง (โดยวิเคราะห์บันทึก VPC Flow Logs, CloudTrail logs, DNS logs)
+- **AWS Security Hub**: ให้ภาพรวมที่ครอบคลุมของสถานะความปลอดภัยบน AWS และช่วยตรวจสอบการปฏิบัติตามมาตรฐานความปลอดภัยและแนวปฏิบัติที่ดีที่สุดของอุตสาหกรรม
 
-## Exam Traps
-- **IAM Roles vs Users**: Always choose IAM Roles for applications running on EC2 needing access to AWS services, never embed user credentials (access keys).
-- **KMS vs CloudHSM**: If a question requires FIPS 140-2 Level 3 compliance or exclusive control over the hardware encryption module, choose CloudHSM.
-- **WAF vs Network Firewall**: WAF is for Layer 7 (HTTP/HTTPS) web application protection. Network Firewall is for Layer 3/4 VPC-wide protection.
+## จุดหลอกข้อสอบ (Exam Traps)
+- **IAM Roles vs Users**: ถ้าจะให้แอปพลิเคชันบน EC2 เข้าถึง AWS services ให้เลือกใช้ IAM Roles เสมอ ห้ามเก็บ Access keys ฝังไว้ในโค้ดหรือในเซิร์ฟเวอร์
+- **KMS vs CloudHSM**: หากโจทย์ต้องการมาตรฐาน FIPS 140-2 Level 3 หรือต้องการที่จะเป็นผู้ควบคุมฮาร์ดแวร์คีย์เพียงผู้เดียว ให้เลือก CloudHSM
+- **WAF vs Network Firewall**: WAF มีไว้สำหรับการป้องกันเว็บแอปพลิเคชันบน Layer 7 (HTTP/HTTPS) แต่ Network Firewall ใช้สำหรับการป้องกันเครือข่ายระดับ VPC บน Layer 3/4

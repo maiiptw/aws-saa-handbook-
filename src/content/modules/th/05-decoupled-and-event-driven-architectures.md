@@ -1,48 +1,48 @@
 ---
-title: "AWS SAA Module 5 - Decoupled and Event-Driven Architectures"
+title: "AWS SAA บทที่ 5 - สถาปัตยกรรมแบบแยกส่วนและขับเคลื่อนด้วยเหตุการณ์ (Decoupled & Event-Driven)"
 moduleNumber: 5
-description: "Architect loose coupling and asynchronous workflows using Amazon SQS, SNS, EventBridge, Step Functions, and API Gateway."
+description: "ออกแบบการเชื่อมโยงระบบแบบหลวม (Loose Coupling) และเวิร์กโฟลว์แบบไม่ประสานเวลา (Asynchronous) ด้วย SQS, SNS, EventBridge, Step Functions และ API Gateway"
 tags: ["SQS", "SNS", "EventBridge", "Step Functions", "Microservices"]
 lastUpdated: 2024-03-01
 ---
 
-# Decoupled and Event-Driven Architectures
+# สถาปัตยกรรมแบบแยกส่วนและขับเคลื่อนด้วยเหตุการณ์
 
-Decoupling application components ensures that the failure of one component doesn't bring down the entire system. AWS provides several messaging and workflow services to achieve this.
+การแยกส่วนประกอบของแอปพลิเคชันออกจากกัน (Decoupling) จะช่วยให้มั่นใจได้ว่าความล้มเหลวของส่วนใดส่วนหนึ่ง จะไม่ทำให้ระบบโดยรวมล่มไปด้วย AWS มีบริการส่งข้อความและจัดการเวิร์กโฟลว์หลายตัวเพื่อจุดประสงค์นี้
 
 ## Amazon SQS (Simple Queue Service)
-Fully managed message queuing service that enables you to decouple and scale microservices, distributed systems, and serverless applications.
-- **Standard Queues**: Maximum throughput, best-effort ordering, at-least-once delivery (duplicates can occur).
-- **FIFO Queues (First-In-First-Out)**: Strict ordering, exactly-once processing, lower throughput compared to Standard queues.
-- **Visibility Timeout**: The amount of time a message is invisible in the queue after a reader picks it up. If processing fails, the message reappears in the queue after the timeout.
-- **Dead-Letter Queues (DLQ)**: A queue to send messages that can't be processed successfully after a certain number of retries.
+บริการเข้าคิวข้อความ (Message Queuing) ที่มีการจัดการอย่างเต็มรูปแบบ ช่วยแยกส่วนประกอบของไมโครเซอร์วิส, ระบบแบบกระจาย, และ Serverless เพื่อให้สามารถขยายขนาดได้
+- **Standard Queues**: ให้ปริมาณงาน (Throughput) สูงสุด พยายามเรียงลำดับให้ดีที่สุด และรับประกันว่าข้อความจะถูกส่งอย่างน้อยหนึ่งครั้ง (At-least-once delivery - ซึ่งอาจมีข้อความซ้ำกันได้)
+- **FIFO Queues (First-In-First-Out)**: เรียงลำดับอย่างเคร่งครัด ประมวลผลแน่นอนหนึ่งครั้งเท่านั้นแบบเป๊ะๆ แต่ปริมาณ Throughput จะต่ำกว่า Standard queues
+- **Visibility Timeout**: ระยะเวลาที่ข้อความจะ "ล่องหน" จากคิวหลังจากที่มีผู้รับข้อความดึงไปประมวลผล หากประมวลผลล้มเหลว ข้อความจะกลับมาปรากฏในคิวอีกครั้งเมื่อหมดเวลา
+- **Dead-Letter Queues (DLQ)**: คิวสำหรับส่งข้อความที่ไม่สามารถประมวลผลได้สำเร็จหลังจากลองใหม่ (Retry) ตามจำนวนครั้งที่กำหนดแล้ว
 
 ## Amazon SNS (Simple Notification Service)
-Fully managed pub/sub messaging service.
-- Publishers send messages to "topics".
-- Subscribers (e.g., SQS queues, Lambda functions, HTTP/S endpoints, email, SMS) receive messages pushed from the topic.
-- **Fanout pattern**: One SNS topic sends a message to multiple SQS queues simultaneously.
+บริการรับส่งข้อความแบบ Pub/Sub (Publish/Subscribe) ที่มีการจัดการแบบเต็มรูปแบบ
+- ผู้เผยแพร่ (Publishers) จะส่งข้อความไปที่ "Topics" (หัวข้อ)
+- ผู้สมัครรับข้อมูล (Subscribers) (เช่น SQS queues, Lambda functions, HTTP/S endpoints, email, SMS) จะได้รับข้อความที่พุชจาก Topic เหล่านั้น
+- **Fanout pattern**: เทคนิคการใช้ SNS topic หนึ่งตัวเพื่อส่งข้อความไปยัง SQS queues หลายคิวพร้อมกัน
 
 ## Amazon EventBridge
-A serverless event bus that connects applications together using data from your own applications, SaaS applications, and AWS services.
-- Replaces CloudWatch Events.
-- Can set rules to route events to targets (e.g., Lambda, Step Functions, SNS).
-- **Schema Registry**: Allows you to discover, create, and manage OpenAPI schemas for events.
+Event bus แบบ Serverless ที่ใช้เชื่อมโยงแอปพลิเคชันเข้าด้วยกันโดยใช้ข้อมูลจากแอปพลิเคชันของคุณเอง, SaaS applications และบริการต่างๆ ของ AWS
+- ใช้แทน CloudWatch Events (อัปเกรดมาให้ดีกว่า)
+- สามารถตั้งค่า Rule เพื่อส่งอีเวนต์ไปยังเป้าหมายที่ต้องการ (เช่น Lambda, Step Functions, SNS)
+- **Schema Registry**: ช่วยให้คุณค้นหา, สร้าง, และจัดการโครงสร้างข้อมูลแบบ OpenAPI ของอีเวนต์ได้
 
 ## AWS Step Functions
-Serverless function orchestrator that makes it easy to sequence AWS Lambda functions and multiple AWS services into business-critical applications.
-- Built using state machines (JSON-based Amazon States Language).
-- Manages state, error handling, retries, and parallel execution.
-- **Standard Workflows**: For long-running workflows (up to 1 year).
-- **Express Workflows**: For high-volume, short-duration workflows (up to 5 minutes).
+ตัวจัดการฟังก์ชัน Serverless สำหรับเรียงลำดับ AWS Lambda functions และบริการอื่นๆ เพื่อร้อยเรียงกันเป็นแอปพลิเคชันหลักทางธุรกิจ
+- สร้างด้วย State machines (ใช้ Amazon States Language แบบ JSON)
+- จัดการเรื่องสถานะ (State), การจัดการข้อผิดพลาด (Error handling), การลองใหม่ (Retries), และการประมวลผลแบบคู่ขนาน (Parallel execution)
+- **Standard Workflows**: เหมาะกับเวิร์กโฟลว์ที่ทำงานระยะยาว (ได้สูงสุด 1 ปี)
+- **Express Workflows**: เหมาะกับเวิร์กโฟลว์ที่มีปริมาณมาก และทำงานระยะสั้น (ได้สูงสุด 5 นาที)
 
 ## Amazon API Gateway
-Fully managed service that makes it easy for developers to create, publish, maintain, monitor, and secure APIs at any scale.
-- Can act as a "front door" for applications to access data, business logic, or functionality from backend services like Lambda or EC2.
-- Supports RESTful APIs and WebSocket APIs.
-- Features include throttling, caching, and API key management.
+บริการที่ช่วยให้นักพัฒนาสร้าง เผยแพร่ บำรุงรักษา และตรวจสอบ API ทุกสเกลได้อย่างปลอดภัย
+- ทำหน้าที่เหมือน "ประตูหน้าบ้าน (Front Door)" สำหรับแอปพลิเคชัน เพื่อเข้าถึงข้อมูล, ตรรกะของระบบ จากหลังบ้านอย่าง Lambda หรือ EC2
+- รองรับการสร้าง RESTful APIs และ WebSocket APIs
+- มีฟีเจอร์ช่วยเรื่องการจำกัดการเรียก (Throttling), การทำแคช (Caching) และการจัดการ API keys
 
-## Exam Traps
-- **SQS vs SNS**: SQS is a pull mechanism (consumers poll the queue). SNS is a push mechanism (pub/sub). Use both for the "fanout" pattern.
-- **SQS Standard vs FIFO**: If the question emphasizes that duplicate messages are unacceptable and order must be preserved, choose FIFO.
-- **Step Functions vs SQS**: If the requirement is complex workflow orchestration with state tracking and multiple steps, choose Step Functions. If it's simple decoupling or buffering, choose SQS.
+## จุดหลอกข้อสอบ (Exam Traps)
+- **SQS vs SNS**: SQS ทำงานแบบ "Pull" (ผู้บริโภคหรือเซิร์ฟเวอร์จะมาดึงข้อความจากคิวเอง) ส่วน SNS ทำงานแบบ "Push" (พุชข้อความไปให้ผู้รับข้อมูล) มักจะใช้ร่วมกันเพื่อสร้างรูปแบบ "Fanout"
+- **SQS Standard vs FIFO**: หากโจทย์เน้นว่าห้ามมีข้อความซ้ำกันเด็ดขาด และต้องรักษาลำดับของข้อมูล ให้เลือก FIFO
+- **Step Functions vs SQS**: หากต้องการเวิร์กโฟลว์การจัดลำดับที่ซับซ้อน มีการติดตามสถานะได้และทำหลายขั้นตอน ให้เลือก Step Functions หากเป็นแค่การแยกส่วนธรรมดา (Decoupling) หรือกันชนโหลดเฉยๆ ให้เลือก SQS

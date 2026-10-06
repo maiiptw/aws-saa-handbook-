@@ -1,63 +1,63 @@
 ---
-title: "AWS SAA Module 1 - Networking and Hybrid Connectivity"
+title: "AWS SAA บทที่ 1 - เครือข่ายและการเชื่อมต่อแบบผสม (Networking & Hybrid Connectivity)"
 moduleNumber: 1
-description: "Master Amazon VPC, Subnets, Route Tables, NAT Gateways, Transit Gateway, Direct Connect, and VPNs for building robust AWS network topologies."
+description: "ทำความเข้าใจ Amazon VPC, Subnets, Route Tables, NAT Gateways, Transit Gateway, Direct Connect และ VPN สำหรับสร้างระบบเครือข่าย AWS"
 tags: ["VPC", "Networking", "Direct Connect", "Transit Gateway", "VPN"]
 lastUpdated: 2024-03-01
 ---
 
-# Networking and Hybrid Connectivity
+# เครือข่ายและการเชื่อมต่อแบบผสม (Networking and Hybrid Connectivity)
 
-Networking is the foundational layer of any AWS deployment. In this module, we will explore the core concepts of Amazon Virtual Private Cloud (VPC), network security, routing, and hybrid connectivity solutions connecting on-premises data centers to AWS.
+ระบบเครือข่ายเป็นพื้นฐานสำคัญของการติดตั้งระบบบน AWS ในบทนี้ เราจะเรียนรู้แนวคิดหลักของ Amazon Virtual Private Cloud (VPC), ความปลอดภัยของเครือข่าย, การจัดเส้นทาง (routing) และระบบการเชื่อมต่อแบบผสมที่เชื่อม Data Center ในองค์กรกับ AWS
 
-## Amazon VPC Fundamentals
+## พื้นฐาน Amazon VPC
 
-Amazon VPC allows you to provision a logically isolated section of the AWS Cloud where you can launch AWS resources in a virtual network that you define.
+Amazon VPC ช่วยให้คุณสามารถสร้างเครือข่ายเสมือน (Virtual Network) ที่แยกส่วนอย่างเป็นอิสระบน AWS Cloud ซึ่งคุณสามารถกำหนดค่าต่างๆ และใช้งานทรัพยากรของ AWS ภายในเครือข่ายนั้นได้
 
 ### Subnets
-- **Public Subnet**: A subnet whose route table directs traffic to the Internet Gateway (IGW).
-- **Private Subnet**: A subnet without a route to the IGW. Instances here cannot be accessed directly from the public internet.
+- **Public Subnet**: ซับเน็ตที่มี Route table ชี้การรับส่งข้อมูลไปยัง Internet Gateway (IGW)
+- **Private Subnet**: ซับเน็ตที่ไม่มีเส้นทางออกไปยัง IGW ทำให้อินสแตนซ์ที่อยู่ภายในไม่สามารถเข้าถึงได้โดยตรงจากอินเทอร์เน็ตสาธารณะ
 
 ### Route Tables
-Route tables contain a set of rules (routes) that determine where network traffic from your subnet or gateway is directed.
-- The `local` route allows instances within the same VPC to communicate with each other.
+ตารางจัดเส้นทางประกอบด้วยชุดของกฎ (routes) ที่กำหนดทิศทางการรับส่งข้อมูลเครือข่ายจากซับเน็ตหรือเกตเวย์
+- กฎ `local` อนุญาตให้อินสแตนซ์ภายใน VPC เดียวกันสามารถสื่อสารกันได้
 
-### Internet Gateway (IGW) & NAT Gateway
-- **IGW**: A horizontally scaled, redundant, and highly available VPC component that allows communication between instances in your VPC and the internet.
-- **NAT Gateway**: Allows instances in a private subnet to connect to the internet or other AWS services, but prevents the internet from initiating a connection with those instances.
+### Internet Gateway (IGW) และ NAT Gateway
+- **IGW**: ส่วนประกอบของ VPC ที่ขยายขนาดได้ตามแนวนอน มีความพร้อมใช้งานสูง และช่วยให้อินสแตนซ์ใน VPC สื่อสารกับอินเทอร์เน็ตได้
+- **NAT Gateway**: ช่วยให้อินสแตนซ์ใน Private Subnet เชื่อมต่อกับอินเทอร์เน็ตหรือบริการอื่นๆ ของ AWS ได้ แต่ป้องกันไม่ให้อินเทอร์เน็ตเริ่มต้นการเชื่อมต่อเข้ามาหาอินสแตนซ์เหล่านั้น
 
-## Network Security
+## ความปลอดภัยของเครือข่าย
 
 ### Security Groups (SGs)
-- Act as a firewall at the **instance level**.
-- Are **stateful**: If you send a request from your instance, the response traffic for that request is allowed to flow in regardless of inbound security group rules.
-- Default: All inbound traffic is denied, all outbound traffic is allowed.
+- ทำหน้าที่เป็นไฟร์วอลล์ระดับ **Instance**
+- เป็นแบบ **Stateful**: หากส่งคำขอออกจากอินสแตนซ์ การรับส่งข้อมูลตอบกลับสำหรับคำขอนั้นจะได้รับอนุญาตให้เข้ามาได้เสมอ โดยไม่คำนึงถึงกฎขาเข้า (inbound rules) ของ Security Group
+- ค่าเริ่มต้น: ปฏิเสธ (Deny) การรับส่งข้อมูลขาเข้าทั้งหมด, อนุญาต (Allow) ขาออกทั้งหมด
 
 ### Network ACLs (NACLs)
-- Act as a firewall at the **subnet level**.
-- Are **stateless**: Return traffic must be explicitly allowed by rules.
-- Support allow and deny rules.
+- ทำหน้าที่เป็นไฟร์วอลล์ระดับ **Subnet**
+- เป็นแบบ **Stateless**: การรับส่งข้อมูลตอบกลับต้องได้รับอนุญาตอย่างชัดเจนในกฎด้วย
+- รองรับทั้งกฎแบบ Allow (อนุญาต) และ Deny (ปฏิเสธ)
 
-## Hybrid Connectivity
+## การเชื่อมต่อแบบผสม (Hybrid Connectivity)
 
-When extending on-premises networks to AWS, you have multiple options:
+เมื่อต้องขยายเครือข่ายภายในองค์กรไปที่ AWS จะมีหลายทางเลือกดังนี้:
 
 ### AWS Site-to-Site VPN
-Creates a secure connection between your data center or branch office and your AWS resources.
-- Uses IPsec tunnels over the public internet.
-- Quick to set up, but bandwidth and latency can vary based on internet performance.
+สร้างการเชื่อมต่อที่ปลอดภัยระหว่าง Data center หรือสำนักงานสาขากับทรัพยากร AWS
+- ใช้ช่องสัญญาณ IPsec (IPsec tunnels) ผ่านอินเทอร์เน็ตสาธารณะ
+- ตั้งค่าได้รวดเร็ว แต่แบนด์วิดท์และความหน่วงอาจผันผวนตามประสิทธิภาพของอินเทอร์เน็ต
 
 ### AWS Direct Connect (DX)
-Establishes a dedicated network connection from your premises to AWS.
-- Bypasses the public internet.
-- Provides a more consistent network experience and higher bandwidth (up to 100 Gbps).
+สร้างการเชื่อมต่อเครือข่ายเฉพาะ (Dedicated network connection) จากองค์กรไปที่ AWS
+- ไม่ผ่านอินเทอร์เน็ตสาธารณะ
+- ให้ประสบการณ์เครือข่ายที่คงที่และมีแบนด์วิดท์สูงกว่า (สูงสุด 100 Gbps)
 
 ### AWS Transit Gateway (TGW)
-A network transit hub that you can use to interconnect your virtual private clouds (VPCs) and on-premises networks.
-- Simplifies network architecture by using a hub-and-spoke topology.
-- Supports cross-region peering.
+ศูนย์กลางการถ่ายโอนเครือข่ายที่ใช้เชื่อมต่อ VPC และเครือข่ายองค์กรหลายๆ แห่งเข้าด้วยกัน
+- ทำให้โครงสร้างสถาปัตยกรรมเครือข่ายง่ายขึ้นโดยใช้รูปแบบ Hub-and-Spoke
+- รองรับการเชื่อมต่อข้าม Region (Cross-region peering)
 
-## Exam Traps
-- **NAT Gateway vs NAT Instance**: Always prefer NAT Gateway for high availability and managed scaling.
-- **VPC Peering vs Transit Gateway**: If connecting more than a few VPCs, Transit Gateway is highly recommended to avoid complex peer-to-peer routing meshes.
-- **Direct Connect Setup Time**: Direct Connect takes weeks to set up physically; use Site-to-Site VPN as an interim solution.
+## จุดหลอกข้อสอบ (Exam Traps)
+- **NAT Gateway vs NAT Instance**: ควรเลือก NAT Gateway เสมอเพื่อให้ได้ความพร้อมใช้งานสูง (HA) และมีการจัดการขยายขนาดโดยอัตโนมัติ
+- **VPC Peering vs Transit Gateway**: หากต้องเชื่อมต่อ VPC จำนวนมาก แนะนำให้ใช้ Transit Gateway เพื่อหลีกเลี่ยงการกำหนดเส้นทางแบบ Peer-to-Peer ที่ซับซ้อน (Mesh)
+- **เวลาในการติดตั้ง Direct Connect**: Direct Connect ใช้เวลาในการติดตั้งทางกายภาพหลายสัปดาห์ ควรใช้ Site-to-Site VPN เป็นทางออกชั่วคราวไปก่อน

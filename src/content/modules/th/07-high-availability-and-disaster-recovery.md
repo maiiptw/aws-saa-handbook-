@@ -1,42 +1,42 @@
 ---
-title: "AWS SAA Module 7 - High Availability and Disaster Recovery"
+title: "AWS SAA บทที่ 7 - ความพร้อมใช้งานสูงและการกู้คืนจากภัยพิบัติ (HA & DR)"
 moduleNumber: 7
-description: "Design resilient systems using Route 53, Multi-AZ deployments, Global Accelerator, and robust Disaster Recovery (DR) strategies."
+description: "ออกแบบระบบให้มีความยืดหยุ่นด้วย Route 53, การใช้งาน Multi-AZ, Global Accelerator และกลยุทธ์การกู้คืนจากภัยพิบัติ (DR) ที่แข็งแกร่ง"
 tags: ["Route 53", "DR", "Multi-AZ", "Global Accelerator"]
 lastUpdated: 2024-03-01
 ---
 
-# High Availability and Disaster Recovery
+# ความพร้อมใช้งานสูงและการกู้คืนจากภัยพิบัติ
 
-Designing systems that can withstand failures and recover quickly is a core tenet of the AWS Well-Architected Framework.
+การออกแบบระบบที่สามารถทนต่อความล้มเหลวและฟื้นฟูได้อย่างรวดเร็วเป็นหลักการสำคัญของ AWS Well-Architected Framework
 
 ## Amazon Route 53
-A highly available and scalable cloud Domain Name System (DNS) web service.
-- Translates human-readable names (e.g., www.example.com) into IP addresses.
-- Acts as a domain registrar.
-- **Routing Policies**:
-  - *Simple Routing*: Use for a single resource that performs a given function for your domain (e.g., a web server).
-  - *Weighted Routing*: Route traffic to multiple resources in proportions that you specify (e.g., A/B testing).
-  - *Latency Routing*: Route traffic to the AWS Region that provides the best latency for the user.
-  - *Failover Routing*: Route traffic to a primary resource when healthy, and to a secondary resource when the primary is unhealthy (Active-Passive DR).
-  - *Geolocation Routing*: Route traffic based on the location of your users.
+บริการระบบโดเมนเนม (DNS) บนคลาวด์ที่มีความพร้อมใช้งานสูงและขยายขนาดได้
+- แปลงชื่อที่มนุษย์อ่านเข้าใจง่าย (เช่น www.example.com) เป็นที่อยู่ IP Address
+- ทำหน้าที่เป็นนายทะเบียนโดเมน (Domain registrar)
+- **นโยบายการจัดเส้นทาง (Routing Policies)**:
+  - *Simple Routing*: ใช้สำหรับทรัพยากรตัวเดียวที่ทำหน้าที่เฉพาะสำหรับโดเมนของคุณ (เช่น เว็บเซิร์ฟเวอร์ 1 ตัว)
+  - *Weighted Routing*: กระจายการรับส่งข้อมูลไปยังทรัพยากรหลายตัวตามสัดส่วนที่คุณกำหนด (เช่น การทำ A/B testing)
+  - *Latency Routing*: กระจายการรับส่งข้อมูลไปยัง AWS Region ที่ให้เวลาแฝง (Latency) ต่ำที่สุดสำหรับผู้ใช้นั้นๆ
+  - *Failover Routing*: กำหนดเส้นทางให้การรับส่งข้อมูลไปที่ทรัพยากรหลัก (Primary) เมื่อระบบทำงานปกติ และสลับไปที่ทรัพยากรรอง (Secondary) เมื่อระบบหลักเสีย (การทำ Active-Passive DR)
+  - *Geolocation Routing*: กำหนดเส้นทางให้การรับส่งข้อมูลตามที่ตั้ง (Location) ของผู้ใช้
 
 ## AWS Global Accelerator
-A networking service that improves the availability and performance of applications with global users.
-- Provides two static IP addresses that act as a fixed entry point to your application endpoints in a single or multiple AWS Regions.
-- Uses the AWS global network to direct traffic to optimal endpoints over the AWS backbone, bypassing the public internet to reduce jitter and latency.
+บริการด้านเครือข่ายที่ช่วยปรับปรุงความพร้อมใช้งานและประสิทธิภาพของแอปพลิเคชันสำหรับผู้ใช้ทั่วโลก
+- มี IP addresses แบบคงที่ให้ 2 ค่า เพื่อเป็นจุดเชื่อมต่อคงที่สำหรับแอปพลิเคชันของคุณในระดับภูมิภาคเดียวหรือหลายภูมิภาค
+- ใช้เครือข่ายระดับโลกของ AWS เพื่อนำการรับส่งข้อมูลไปยังปลายทางที่ดีที่สุด โดยไม่ต้องผ่านอินเทอร์เน็ตสาธารณะ จึงช่วยลดปัญหาความหน่วงและสัญญาณกระตุก (Jitter)
 
-## Disaster Recovery (DR) Strategies
-Disaster recovery focuses on keeping workloads available or recovering them in the event of a disaster.
-- **RTO (Recovery Time Objective)**: The maximum acceptable delay between the interruption of service and the restoration of service.
-- **RPO (Recovery Point Objective)**: The maximum acceptable amount of data loss measured in time.
+## กลยุทธ์การกู้คืนจากภัยพิบัติ (Disaster Recovery - DR)
+การกู้คืนจากภัยพิบัติมุ่งเน้นไปที่การทำให้ระบบยังคงใช้งานได้ หรือฟื้นฟูกลับมาได้เมื่อเกิดเหตุขัดข้อง
+- **RTO (Recovery Time Objective)**: ระยะเวลาสูงสุดที่ยอมรับได้ที่จะให้ระบบหยุดทำงาน และระบบสามารถกลับมาให้บริการได้อีกครั้ง
+- **RPO (Recovery Point Objective)**: ปริมาณข้อมูลสูงสุดที่ยอมรับได้ที่จะสูญหายไป โดยวัดเป็นระยะเวลา
 
-### DR Patterns on AWS
-1. **Backup and Restore**: Lowest cost, highest RTO/RPO. Data is backed up to S3; upon disaster, infrastructure is provisioned and data restored.
-2. **Pilot Light**: Core infrastructure is running in a secondary region, but at a minimal scale (e.g., database running, but no compute). Faster recovery than Backup and Restore.
-3. **Warm Standby**: A scaled-down version of the fully functional environment is always running in the secondary region.
-4. **Multi-Site (Hot Standby)**: Active-Active configuration. The application is running at full scale in multiple regions simultaneously. Highest cost, lowest RTO/RPO (near zero).
+### รูปแบบ DR บน AWS
+1. **Backup and Restore**: ต้นทุนต่ำที่สุด แต่ RTO/RPO สูงที่สุด ข้อมูลจะถูกแบ็คอัปไว้ใน S3 เมื่อเกิดปัญหา ต้องสร้างโครงสร้างพื้นฐานใหม่และกู้คืนข้อมูลกลับมา
+2. **Pilot Light**: สร้างโครงสร้างพื้นฐานหลักทำงานอยู่ใน Region สำรอง แต่ทำงานด้วยสเกลต่ำสุด (เช่น ฐานข้อมูลเปิดอยู่ แต่ไม่มี Compute) ฟื้นฟูได้เร็วกว่า Backup and Restore
+3. **Warm Standby**: มีสภาพแวดล้อมขนาดย่อส่วนที่ทำงานได้อย่างเต็มรูปแบบ เปิดใช้งานอยู่ตลอดเวลาใน Region สำรอง
+4. **Multi-Site (Hot Standby)**: เป็นการกำหนดค่าแบบ Active-Active แอปพลิเคชันทำงานแบบเต็มสูบในหลายภูมิภาคพร้อมกัน ต้นทุนสูงสุด แต่ได้ RTO/RPO ต่ำที่สุด (เกือบจะเป็นศูนย์)
 
-## Exam Traps
-- **Route 53 vs Global Accelerator**: Use Route 53 when routing based on geography, latency, or DNS. Use Global Accelerator when you need static IP addresses and want to optimize performance by leveraging the AWS global backbone instead of the public internet.
-- **DR Strategies**: Be able to identify which DR strategy matches a given budget and RTO/RPO requirement. "Cost-effective but tolerates hours of downtime" = Backup and Restore. "Mission-critical, zero downtime" = Multi-Site Active-Active.
+## จุดหลอกข้อสอบ (Exam Traps)
+- **Route 53 vs Global Accelerator**: ใช้ Route 53 เมื่อต้องการกำหนดเส้นทางตามสถานที่, ความหน่วง หรือจัดการ DNS แต่ให้ใช้ Global Accelerator หากคุณต้องการ Static IP addresses และต้องการปรับปรุงประสิทธิภาพโดยใช้โครงข่าย AWS แทนที่จะผ่านอินเทอร์เน็ตสาธารณะ
+- **DR Strategies**: ข้อสอบมักจะให้คุณเลือกกลยุทธ์ DR ที่ตรงกับงบประมาณและเงื่อนไขของ RTO/RPO เช่น "คุ้มค่าใช้จ่ายแต่ทนกับการหยุดทำงานได้หลายชั่วโมง" = Backup and Restore หรือ "งานสำคัญระดับประเทศ ห้ามหยุดทำงานเลยเด็ดขาด" = Multi-Site Active-Active

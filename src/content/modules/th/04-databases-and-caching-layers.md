@@ -1,57 +1,57 @@
 ---
-title: "AWS SAA Module 4 - Databases and Caching Layers"
+title: "AWS SAA บทที่ 4 - ฐานข้อมูลและการใช้แคช"
 moduleNumber: 4
-description: "Select the right database engine: Amazon RDS, Aurora, DynamoDB, ElastiCache, and Redshift based on performance, scalability, and access patterns."
+description: "เลือกฐานข้อมูลที่เหมาะสม: Amazon RDS, Aurora, DynamoDB, ElastiCache และ Redshift โดยพิจารณาจากประสิทธิภาพ ความยืดหยุ่น และรูปแบบการเข้าถึง"
 tags: ["RDS", "DynamoDB", "Aurora", "ElastiCache", "Databases"]
 lastUpdated: 2024-03-01
 ---
 
-# Databases and Caching Layers
+# ฐานข้อมูลและการจัดการแคช (Databases and Caching Layers)
 
-Selecting the correct database and caching strategy is crucial for application performance and scalability.
+การเลือกกลยุทธ์ฐานข้อมูลและแคชที่ถูกต้องเป็นสิ่งสำคัญสำหรับประสิทธิภาพและความสามารถในการปรับขนาดของแอปพลิเคชัน
 
-## Relational Databases (OLTP)
+## ฐานข้อมูลเชิงสัมพันธ์ (OLTP)
 
 ### Amazon RDS (Relational Database Service)
-Managed service for relational databases (MySQL, PostgreSQL, MariaDB, Oracle, SQL Server).
-- **Multi-AZ Deployments**: Used for High Availability (Disaster Recovery). Synchronous replication to a standby instance in another AZ.
-- **Read Replicas**: Used for scalability (read-heavy workloads). Asynchronous replication to other instances (up to 15 per RDS instance).
+บริการที่มีการจัดการ (Managed service) สำหรับฐานข้อมูลเชิงสัมพันธ์ (MySQL, PostgreSQL, MariaDB, Oracle, SQL Server)
+- **การติดตั้งแบบ Multi-AZ**: ใช้เพื่อความพร้อมใช้งานสูง (Disaster Recovery) เป็นการทำสำเนาแบบ Synchronous (เรียลไทม์) ไปยังอินสแตนซ์สำรองในอีก AZ หนึ่ง
+- **Read Replicas**: ใช้เพื่อขยายขนาดการอ่าน (Read-heavy workloads) เป็นการทำสำเนาแบบ Asynchronous ไปยังอินสแตนซ์อื่น (สูงสุด 15 อินสแตนซ์ต่อ RDS instance)
 
 ### Amazon Aurora
-A MySQL and PostgreSQL-compatible relational database built for the cloud.
-- Performance and availability of commercial databases at 1/10th the cost.
-- Storage automatically scales up to 128 TB.
-- **Aurora Serverless**: On-demand, auto-scaling configuration for unpredictable or intermittent workloads.
-- **Aurora Global Database**: Spans multiple AWS regions, providing low-latency global reads and disaster recovery from region-wide outages.
+ฐานข้อมูลเชิงสัมพันธ์ที่เข้ากันได้กับ MySQL และ PostgreSQL ที่สร้างขึ้นมาเพื่อระบบคลาวด์โดยเฉพาะ
+- ให้ประสิทธิภาพและความพร้อมใช้งานเทียบเท่าฐานข้อมูลเชิงพาณิชย์ในราคาเพียง 1 ใน 10
+- สามารถขยายพื้นที่จัดเก็บได้อัตโนมัติสูงสุดถึง 128 TB
+- **Aurora Serverless**: เป็นการตั้งค่าแบบ On-demand และปรับขนาดอัตโนมัติสำหรับเวิร์กโหลดที่ไม่สามารถคาดเดาได้หรือไม่สม่ำเสมอ
+- **Aurora Global Database**: กระจายข้ามภูมิภาค (Region) หลายแห่ง ให้ความหน่วงในการอ่านที่ต่ำทั่วโลก และเป็นการเตรียมพร้อมสำหรับการกู้คืนจากภัยพิบัติ หากเกิดปัญหากับศูนย์ข้อมูลทั้งภูมิภาค
 
 ## NoSQL Databases
 
 ### Amazon DynamoDB
-Fully managed, highly available, key-value and document database.
-- Single-digit millisecond performance at any scale.
-- Serverless: No instances to provision or manage.
-- **DynamoDB Streams**: Captures a time-ordered sequence of item-level modifications in any DynamoDB table (useful for triggering Lambda functions).
-- **Global Tables**: Fully managed, multi-region, and multi-active database for globally distributed applications.
+ฐานข้อมูลรูปแบบ Key-Value และเอกสาร ที่มีพร้อมใช้งานสูง มีการจัดการเต็มรูปแบบ
+- ประสิทธิภาพรวดเร็วในหลักมิลลิวินาที (Single-digit millisecond) ในทุกสเกลการใช้งาน
+- เป็น Serverless: ไม่จำเป็นต้องเปิดเครื่อง (Provision) หรือจัดการอินสแตนซ์
+- **DynamoDB Streams**: จับลำดับเวลาของการปรับเปลี่ยนข้อมูลในตาราง DynamoDB (มีประโยชน์ในการเรียกใช้ Lambda functions ตามอีเวนต์ต่างๆ)
+- **Global Tables**: ฐานข้อมูลที่มีการจัดการเต็มรูปแบบ แบบ Multi-region และ Multi-active สำหรับแอปพลิเคชันที่กระจายอยู่ทั่วโลก
 
-## Caching
+## การทำแคช (Caching)
 
 ### Amazon ElastiCache
-Fully managed in-memory data store and cache service.
-- **Memcached**: Simple, scalable, multi-threaded caching. No persistence or Multi-AZ support.
-- **Redis**: Advanced data structures, pub/sub capabilities, Multi-AZ with automatic failover, data persistence, and backups.
+บริการ Data store ในหน่วยความจำและแคชที่มีการจัดการอย่างเต็มรูปแบบ
+- **Memcached**: ระบบแคชแบบง่าย ยืดหยุ่น และรองรับ Multi-threaded ไม่มีระบบกู้คืนข้อมูลและไม่รองรับ Multi-AZ
+- **Redis**: โครงสร้างข้อมูลขั้นสูง มีความสามารถ Pub/Sub, รองรับ Multi-AZ แบบมีการสลับเซิร์ฟเวอร์อัตโนมัติ (Failover), สามารถบันทึกข้อมูลแบบถาวร (Persistence) และสำรองข้อมูลได้
 
 ### DynamoDB Accelerator (DAX)
-- A fully managed, highly available, in-memory cache for DynamoDB that delivers up to a 10x performance improvement (microseconds latency).
+- เป็นแคชในหน่วยความจำที่มีการจัดการเต็มรูปแบบ สำหรับ DynamoDB ช่วยปรับปรุงประสิทธิภาพให้เร็วกว่าเดิมถึง 10 เท่า (ลดเวลาแฝงเหลือระดับไมโครวินาที)
 
-## Data Warehousing (OLAP)
+## คลังข้อมูล (OLAP)
 
 ### Amazon Redshift
-Fast, fully managed, petabyte-scale data warehouse service.
-- Optimized for complex queries against large datasets (OLAP).
-- Uses columnar storage and massively parallel processing (MPP).
-- **Redshift Spectrum**: Allows querying data directly in Amazon S3 without loading it into Redshift tables.
+บริการคลังข้อมูล (Data Warehouse) ที่รวดเร็ว จัดการได้อย่างสมบูรณ์ ปรับขนาดได้ถึงระดับเพตาไบต์
+- ปรับแต่งมาเพื่อการสืบค้นข้อมูลที่ซับซ้อนในชุดข้อมูลขนาดใหญ่ (OLAP)
+- ใช้การจัดเก็บข้อมูลแบบคอลัมน์และกระบวนการประมวลผลแบบขนานขนาดใหญ่ (MPP)
+- **Redshift Spectrum**: ช่วยให้สามารถสืบค้นข้อมูลได้โดยตรงจาก Amazon S3 โดยไม่ต้องโหลดข้อมูลเข้าสู่ตารางใน Redshift
 
-## Exam Traps
-- **RDS Multi-AZ vs Read Replicas**: Multi-AZ is for HA/DR (failover), not for scaling read traffic. Read Replicas are for read scaling.
-- **DynamoDB Use Cases**: Look for "key-value store," "single-digit millisecond latency," or "flexible schema" as indicators to choose DynamoDB.
-- **ElastiCache Redis vs Memcached**: If the requirement mentions HA, failover, pub/sub, or complex data types, choose Redis. If it mentions simple caching and multi-threading, choose Memcached.
+## จุดหลอกข้อสอบ (Exam Traps)
+- **RDS Multi-AZ vs Read Replicas**: ให้จำไว้ว่า Multi-AZ ใช้เพื่อความพร้อมใช้งานสูง หรือกู้คืนจากภัยพิบัติ (Failover) ไม่ใช่ใช้เพื่อเพิ่มประสิทธิภาพการอ่าน หากจะเพิ่มสเกลการอ่าน ต้องใช้ Read Replicas
+- **Use Cases ของ DynamoDB**: หากเจอคำว่า "key-value store", "ความหน่วงในหน่วยมิลลิวินาที (single-digit millisecond latency)" หรือ "schema ที่ยืดหยุ่น" คำตอบที่เหมาะสมคือ DynamoDB
+- **ElastiCache Redis vs Memcached**: หากข้อกำหนดกล่าวถึง ความพร้อมใช้งานสูง (HA), Failover, Pub/sub หรือข้อมูลที่มีความซับซ้อน ให้เลือก Redis หากเป็นแค่การทำแคชธรรมดาและต้องการการทำงานแบบหลายเธรด (Multi-threading) ให้เลือก Memcached

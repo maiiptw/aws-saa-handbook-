@@ -1,59 +1,59 @@
 ---
-title: "AWS SAA Module 3 - Storage and Data Lifecycle"
+title: "AWS SAA บทที่ 3 - การจัดเก็บข้อมูลและวงจรชีวิตข้อมูล"
 moduleNumber: 3
-description: "Understand Amazon S3, EBS, EFS, FSx, and Storage Gateway to optimize storage performance, cost, and data lifecycle management."
+description: "ทำความเข้าใจ Amazon S3, EBS, EFS, FSx และ Storage Gateway เพื่อเพิ่มประสิทธิภาพ ลดต้นทุน และจัดการวงจรชีวิตของข้อมูล"
 tags: ["S3", "EBS", "EFS", "Storage Gateway", "FSx"]
 lastUpdated: 2024-03-01
 ---
 
-# Storage and Data Lifecycle
+# การจัดเก็บข้อมูลและวงจรชีวิตข้อมูล
 
-AWS provides a variety of storage services tailored for block, file, and object storage requirements.
+AWS นำเสนอบริการจัดเก็บข้อมูลหลากหลายประเภทที่ปรับให้เข้ากับความต้องการ ทั้งแบบ Block, File และ Object Storage
 
 ## Amazon S3 (Simple Storage Service)
 
-S3 is an object storage service offering industry-leading scalability, data availability, security, and performance.
+S3 เป็นบริการพื้นที่จัดเก็บข้อมูลแบบ Object ที่นำเสนอความสามารถในการขยายขนาด, ความพร้อมใช้งานของข้อมูล, ความปลอดภัย และประสิทธิภาพในระดับแนวหน้าของอุตสาหกรรม
 
-### Storage Classes
-1. **S3 Standard**: General purpose, frequently accessed data.
-2. **S3 Standard-IA (Infrequent Access)**: Data accessed less frequently but requires rapid access when needed. Lower storage cost, but incurs retrieval fees.
-3. **S3 One Zone-IA**: Same as Standard-IA but stored in only one AZ. Lower cost, but data can be lost if the AZ is destroyed.
-4. **S3 Glacier Flexible Retrieval**: Archive storage. Retrieval takes minutes to hours.
-5. **S3 Glacier Deep Archive**: Lowest cost storage. Retrieval takes 12-48 hours.
-6. **S3 Intelligent-Tiering**: Automatically moves data to the most cost-effective access tier based on access patterns without performance impact or retrieval fees.
+### Storage Classes (ระดับชั้นการจัดเก็บข้อมูล)
+1. **S3 Standard**: ใช้งานทั่วไป ข้อมูลที่ถูกเรียกใช้บ่อย
+2. **S3 Standard-IA (Infrequent Access)**: ข้อมูลที่ไม่ได้เรียกใช้บ่อย แต่ต้องการเข้าถึงอย่างรวดเร็วเมื่อจำเป็น มีค่าใช้จ่ายพื้นที่จัดเก็บต่ำกว่า แต่มีค่าธรรมเนียมในการเรียกคืนข้อมูล
+3. **S3 One Zone-IA**: เหมือนกับ Standard-IA แต่เก็บข้อมูลไว้ใน AZ เดียว ต้นทุนถูกลง แต่ข้อมูลอาจสูญหายหาก AZ นั้นพัง
+4. **S3 Glacier Flexible Retrieval**: การจัดเก็บถาวร (Archive) การเรียกคืนข้อมูลอาจใช้เวลาตั้งแต่ระดับนาทีไปจนถึงชั่วโมง
+5. **S3 Glacier Deep Archive**: การจัดเก็บข้อมูลที่มีต้นทุนต่ำที่สุด การเรียกคืนใช้เวลา 12-48 ชั่วโมง
+6. **S3 Intelligent-Tiering**: ย้ายข้อมูลไปยังระดับชั้นที่คุ้มค่าที่สุดโดยอัตโนมัติตามรูปแบบการเข้าถึง โดยไม่ส่งผลกระทบต่อประสิทธิภาพหรือมีค่าธรรมเนียมการเรียกคืน
 
-### Lifecycle Policies
-Rules that define actions applied to objects during their lifetime.
-- **Transition actions**: Move objects to another storage class (e.g., Standard to Glacier after 30 days).
-- **Expiration actions**: Delete objects after a specified period.
+### นโยบายวงจรชีวิต (Lifecycle Policies)
+กฎที่กำหนดการดำเนินการที่ใช้กับอ็อบเจ็กต์ในช่วงอายุของมัน
+- **Transition actions (การย้าย)**: ย้ายอ็อบเจ็กต์ไปที่ Storage Class อื่น (เช่น จาก Standard ไป Glacier หลังจาก 30 วัน)
+- **Expiration actions (การหมดอายุ)**: ลบอ็อบเจ็กต์หลังจากระยะเวลาที่กำหนด
 
 ## Block Storage: Amazon EBS (Elastic Block Store)
 
-EBS provides persistent block storage volumes for use with EC2 instances.
-- **gp2/gp3 (General Purpose SSD)**: Balances price and performance for most workloads.
-- **io1/io2 (Provisioned IOPS SSD)**: Highest performance for mission-critical, low-latency, or high-throughput workloads (e.g., large databases).
-- **st1 (Throughput Optimized HDD)**: Low-cost storage for frequently accessed, throughput-intensive workloads (e.g., Big Data, log processing).
-- **sc1 (Cold HDD)**: Lowest cost storage for infrequently accessed workloads.
-- EBS snapshots are incremental backups of EBS volumes stored in S3.
+EBS ให้บริการพื้นที่เก็บข้อมูลบล็อกแบบถาวร สำหรับใช้งานร่วมกับอินสแตนซ์ EC2
+- **gp2/gp3 (General Purpose SSD)**: สมดุลระหว่างราคาและประสิทธิภาพสำหรับเวิร์กโหลดส่วนใหญ่
+- **io1/io2 (Provisioned IOPS SSD)**: ประสิทธิภาพสูงสุดสำหรับงานสำคัญที่มีความหน่วงต่ำหรือมีปริมาณการประมวลผล (Throughput) สูง (เช่น ฐานข้อมูลขนาดใหญ่)
+- **st1 (Throughput Optimized HDD)**: พื้นที่จัดเก็บต้นทุนต่ำสำหรับข้อมูลที่เข้าถึงบ่อยและเน้นปริมาณ Throughput เป็นหลัก (เช่น Big Data, log processing)
+- **sc1 (Cold HDD)**: ต้นทุนต่ำที่สุด สำหรับข้อมูลที่ไม่ค่อยถูกเข้าถึง
+- Snapshot ของ EBS คือการสำรองข้อมูลส่วนที่เปลี่ยนแปลงของวอลุ่ม EBS ไปเก็บไว้ใน S3 (Incremental backups)
 
 ## File Storage
 
 ### Amazon EFS (Elastic File System)
-- A serverless, fully elastic file storage system.
-- Can be mounted on multiple EC2 instances simultaneously across different AZs.
-- Uses the NFS protocol (Linux only).
+- เป็นระบบไฟล์แบบ Serverless และยืดหยุ่นเต็มรูปแบบ
+- สามารถเชื่อมต่อ (Mount) กับอินสแตนซ์ EC2 หลายเครื่องพร้อมกัน ข้าม Availability Zones ได้
+- ใช้โพรโทคอล NFS (สำหรับ Linux เท่านั้น)
 
 ### Amazon FSx
-- **FSx for Windows File Server**: Fully managed native Windows file system (uses SMB protocol). Supports Active Directory integration.
-- **FSx for Lustre**: High-performance file system optimized for fast processing of workloads like machine learning and high-performance computing (HPC). Can be linked directly to an S3 bucket.
+- **FSx for Windows File Server**: ระบบจัดการไฟล์ Windows แบบ Managed เต็มรูปแบบ (ใช้โพรโทคอล SMB) รองรับการทำงานร่วมกับ Active Directory
+- **FSx for Lustre**: ระบบไฟล์ประสิทธิภาพสูงที่ออกแบบมาเพื่อการประมวลผลที่รวดเร็วสำหรับเวิร์กโหลด เช่น Machine Learning และ High-Performance Computing (HPC) สามารถเชื่อมโยงโดยตรงกับ Bucket ใน S3 ได้
 
 ## Hybrid Storage: AWS Storage Gateway
-Connects on-premises environments to AWS cloud storage.
-- **File Gateway**: Provides a file interface (NFS/SMB) to S3.
-- **Volume Gateway**: Provides block storage (iSCSI) volumes backed by S3 (Cached or Stored volumes).
-- **Tape Gateway**: Replaces physical tapes with virtual tapes stored in S3/Glacier.
+เชื่อมต่อสภาพแวดล้อมภายในองค์กรเข้ากับพื้นที่จัดเก็บข้อมูลบน AWS Cloud
+- **File Gateway**: ให้ช่องทางติดต่อแบบไฟล์ (NFS/SMB) ไปยัง S3
+- **Volume Gateway**: ให้พื้นที่จัดเก็บข้อมูลแบบบล็อก (iSCSI) ที่สนับสนุนโดย S3 (แบบ Cached หรือ Stored volumes)
+- **Tape Gateway**: แทนที่เทปทางกายภาพด้วยเทปเสมือนที่จัดเก็บอยู่ใน S3/Glacier
 
-## Exam Traps
-- **Multi-AZ vs Single-AZ Storage**: EFS is regional (Multi-AZ) by default. EBS is tied to a single AZ (unless using EBS Multi-Attach with io1/io2, but it's still intra-AZ).
-- **Windows vs Linux File Shares**: For Windows instances, use FSx for Windows. For Linux instances needing shared storage, use EFS.
-- **S3 Object Locks**: Use S3 Object Lock for WORM (Write Once Read Many) compliance to prevent deletion or modification of objects.
+## จุดหลอกข้อสอบ (Exam Traps)
+- **Multi-AZ vs Single-AZ Storage**: ค่าเริ่มต้น EFS ทำงานในระดับภูมิภาค (Multi-AZ) แต่ EBS ผูกติดอยู่กับ AZ เดี่ยวเท่านั้น (เว้นแต่จะใช้ EBS Multi-Attach ร่วมกับ io1/io2 แต่ก็ยังอยู่ใน AZ เดียวกัน)
+- **Windows vs Linux File Shares**: สำหรับอินสแตนซ์ Windows ให้ใช้ FSx for Windows สำหรับ Linux ที่ต้องการพื้นที่จัดเก็บแชร์ ให้ใช้ EFS
+- **S3 Object Locks**: ใช้ S3 Object Lock สำหรับกฎระเบียบแบบ WORM (Write Once Read Many) เพื่อป้องกันไม่ให้อ็อบเจ็กต์ถูกลบหรือถูกแก้ไข
