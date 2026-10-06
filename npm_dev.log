@@ -2,17 +2,30 @@
 > galactic-gravity@0.0.1 dev
 > astro dev
 
-07:38:06 [vite] connected.
-07:38:06 [types] Generated 1ms
-07:38:07 [vite] connected.
-07:38:07 [content] Syncing content
-07:38:07 [content] Synced content
-07:38:07 [vite] Re-optimizing dependencies because vite config has changed
- astro  v7.3.5 ready in 2187 ms
+07:57:27 [vite] connected.
+07:57:27 [types] Generated 3ms
+07:57:29 [vite] connected.
+07:57:29 [content] Syncing content
+07:57:29 [content] Synced content
+ astro  v7.3.5 ready in 2628 ms
 ┃ Local    http://localhost:4321/
 ┃ Network  use --host to expose
-07:38:07 watching for file changes...
-07:38:35 [200] /th/modules/01-networking-and-hybrid-connectivity 215ms
-07:38:40 [200] /th/modules/03-storage-and-data-lifecycle 13ms
-07:40:13 [vite] program reload
-07:40:14 [vite] program reload
+07:57:29 watching for file changes...
+07:58:15 [200] /en/modules/02-compute-scaling-and-load-balancing 374ms
+08:03:00 Configuration file updated. Restarting...
+08:03:00 [vite] program reload
+08:03:00 [vite] connected.
+08:03:00 [vite] connected.
+08:03:00 [vite] Re-optimizing dependencies because lockfile has changed
+08:03:01 [vite] server restarted.
+08:03:02 [vite] [optimizer] bundling dependencies...
+08:04:41 [200] /en/modules/02-compute-scaling-and-load-balancing 208ms
+08:06:04 Configuration file updated. Restarting...
+08:06:04 [vite] program reload
+08:06:04 [vite] connected.
+08:06:04 [vite] connected.
+08:06:04 [vite] Re-optimizing dependencies because lockfile has changed
+08:06:04 [vite] server restarted.
+08:07:24 [200] /en/modules/02-compute-scaling-and-load-balancing 307ms
+08:08:47 [200] /en/modules/01-networking-and-hybrid-connectivity 21ms
+08:09:51 [200] /en/modules/03-storage-and-data-lifecycle 15ms
