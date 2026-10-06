@@ -14,6 +14,15 @@ lastUpdated: 2024-03-01
 
 Amazon VPC ช่วยให้คุณสามารถสร้างเครือข่ายเสมือน (Virtual Network) ที่แยกส่วนอย่างเป็นอิสระบน AWS Cloud ซึ่งคุณสามารถกำหนดค่าต่างๆ และใช้งานทรัพยากรของ AWS ภายในเครือข่ายนั้นได้
 
+### VPC Peering vs Transit Gateway
+- **VPC Peering**: เชื่อมต่อ 2 VPC เข้าด้วยกันโดยตรงผ่านเครือข่ายส่วนตัวของ AWS โดยไม่มีคุณสมบัติ Transitive (ถ้า VPC A เชื่อมกับ B, และ B เชื่อมกับ C, A จะไม่สามารถคุยกับ C ได้โดยอัตโนมัติ)
+- **AWS Transit Gateway (TGW)**: ศูนย์กลางเครือข่าย (แบบ Hub-and-Spoke) ที่สามารถเชื่อมต่อ VPC นับพันแห่งและเครือข่าย On-premises เข้าด้วยกัน แก้ปัญหาสายใยแมงมุม (Complex Mesh) ของ VPC Peering ได้
+
+### VPC Endpoints (Gateway vs Interface)
+VPC Endpoints อนุญาตให้เชื่อมต่อแบบส่วนตัว (Private) จาก VPC ของคุณไปยังบริการต่างๆ ของ AWS โดยไม่ต้องออกอินเทอร์เน็ตผ่าน Internet Gateway หรือ NAT Gateway
+- **Gateway Endpoints**: ใช้งานฟรี (ไม่มีค่าใช้จ่ายรายชั่วโมง) โดยจะถูกนำไปวางไว้ใน Route Table ปัจจุบันรองรับเพียง **Amazon S3** และ **DynamoDB** เท่านั้น
+- **Interface Endpoints (AWS PrivateLink)**: มีค่าใช้จ่ายรายชั่วโมงและค่าประมวลผลข้อมูล จะสร้าง Elastic Network Interface (ENI) ขึ้นมาใน Subnet ของคุณพร้อม Private IP รองรับบริการจำนวนมาก (เช่น SNS, SQS, Kinesis, EC2 API)
+
 ### Subnets
 - **Public Subnet**: ซับเน็ตที่มี Route table ชี้การรับส่งข้อมูลไปยัง Internet Gateway (IGW)
 - **Private Subnet**: ซับเน็ตที่ไม่มีเส้นทางออกไปยัง IGW ทำให้อินสแตนซ์ที่อยู่ภายในไม่สามารถเข้าถึงได้โดยตรงจากอินเทอร์เน็ตสาธารณะ
@@ -37,6 +46,12 @@ Amazon VPC ช่วยให้คุณสามารถสร้างเค
 - ทำหน้าที่เป็นไฟร์วอลล์ระดับ **Subnet**
 - เป็นแบบ **Stateless**: การรับส่งข้อมูลตอบกลับต้องได้รับอนุญาตอย่างชัดเจนในกฎด้วย
 - รองรับทั้งกฎแบบ Allow (อนุญาต) และ Deny (ปฏิเสธ)
+
+## เครือข่ายขอบ (Edge) & การส่งมอบเนื้อหา (Content Delivery)
+
+### Amazon CloudFront vs AWS Global Accelerator
+- **Amazon CloudFront**: เป็น Content Delivery Network (CDN) ที่ใช้แคชข้อมูล (ทั้ง Static และ Dynamic) ไว้ที่ Edge Locations เพื่อส่งมอบเนื้อหาให้ผู้ใช้ได้เร็วขึ้น แต่จะใช้อินเทอร์เน็ตสาธารณะในช่วงสุดท้าย (Last mile)
+- **AWS Global Accelerator**: กำหนดเส้นทางทราฟฟิกไปยัง Endpoint ระดับภูมิภาคที่เหมาะสมที่สุดผ่านเครือข่ายแกนกลาง (Global Network) ของ AWS บริการนี้ **ไม่ทำ Cache ข้อมูล** แต่ให้ IP แบบ Static Anycast 2 ไอพี และช่วยเพิ่มประสิทธิภาพสำหรับทราฟฟิกแบบ UDP/TCP อย่างมาก (เช่น เกม, IoT)
 
 ## การเชื่อมต่อแบบผสม (Hybrid Connectivity)
 

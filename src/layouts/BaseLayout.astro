@@ -14,6 +14,11 @@ const urlPath = Astro.url.pathname.replace(`/${lang}`, '') || '/';
     <meta name="generator" content={Astro.generator} />
     <title>{title} | AWS SAA Handbook</title>
 
+    <!-- Google Fonts: Prompt for Thai/English -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
     <script is:inline>
       // Apply dark mode on initial load
       const theme = (() => {

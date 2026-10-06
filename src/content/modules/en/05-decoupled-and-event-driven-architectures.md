@@ -23,6 +23,12 @@ Fully managed pub/sub messaging service.
 - Subscribers (e.g., SQS queues, Lambda functions, HTTP/S endpoints, email, SMS) receive messages pushed from the topic.
 - **Fanout pattern**: One SNS topic sends a message to multiple SQS queues simultaneously.
 
+## Amazon Kinesis
+A managed service for processing and analyzing real-time streaming data at massive scale.
+- **Kinesis Data Streams (KDS)**: Ingests real-time data streams (e.g., IoT, logs, clickstreams) which are processed by consumers. Data is stored in shards.
+- **Kinesis Data Firehose**: Loads streaming data into data lakes, data stores, and analytics tools (e.g., S3, Redshift, OpenSearch).
+- **Kinesis Data Analytics**: Process and analyze streaming data using standard SQL.
+
 ## Amazon EventBridge
 A serverless event bus that connects applications together using data from your own applications, SaaS applications, and AWS services.
 - Replaces CloudWatch Events.
@@ -44,5 +50,6 @@ Fully managed service that makes it easy for developers to create, publish, main
 
 ## Exam Traps
 - **SQS vs SNS**: SQS is a pull mechanism (consumers poll the queue). SNS is a push mechanism (pub/sub). Use both for the "fanout" pattern.
+- **SQS vs Kinesis**: SQS is for message processing and decoupling (messages are deleted after processing). Kinesis is for real-time streaming data ingestion (messages can be replayed by multiple consumers).
 - **SQS Standard vs FIFO**: If the question emphasizes that duplicate messages are unacceptable and order must be preserved, choose FIFO.
 - **Step Functions vs SQS**: If the requirement is complex workflow orchestration with state tracking and multiple steps, choose Step Functions. If it's simple decoupling or buffering, choose SQS.

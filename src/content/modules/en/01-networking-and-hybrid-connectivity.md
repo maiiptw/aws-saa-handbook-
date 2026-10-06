@@ -14,6 +14,16 @@ Networking is the foundational layer of any AWS deployment. In this module, we w
 
 Amazon VPC allows you to provision a logically isolated section of the AWS Cloud where you can launch AWS resources in a virtual network that you define.
 
+### VPC Peering vs Transit Gateway
+- **VPC Peering**: Connects two VPCs directly using AWS's private network. It is not transitive. If VPC A is peered with B, and B with C, A cannot talk to C.
+- **AWS Transit Gateway (TGW)**: A network transit hub (hub-and-spoke model) that interconnects thousands of VPCs and on-premises networks. Solves the complex mesh problem of VPC Peering.
+
+### VPC Endpoints (Gateway vs Interface)
+VPC Endpoints allow private connections from your VPC to supported AWS services without requiring an Internet Gateway or NAT Gateway.
+- **Gateway Endpoints**: Free to use. Placed in a Route Table. Supports **only** Amazon S3 and DynamoDB.
+- **Interface Endpoints (AWS PrivateLink)**: Incurs an hourly cost and data processing charges. Creates an Elastic Network Interface (ENI) in your subnet with a private IP. Supports many services (e.g., SNS, SQS, Kinesis, EC2 API).
+
+
 ### Subnets
 - **Public Subnet**: A subnet whose route table directs traffic to the Internet Gateway (IGW).
 - **Private Subnet**: A subnet without a route to the IGW. Instances here cannot be accessed directly from the public internet.
@@ -37,6 +47,12 @@ Route tables contain a set of rules (routes) that determine where network traffi
 - Act as a firewall at the **subnet level**.
 - Are **stateless**: Return traffic must be explicitly allowed by rules.
 - Support allow and deny rules.
+
+## Edge & Content Delivery
+
+### Amazon CloudFront vs AWS Global Accelerator
+- **Amazon CloudFront**: A Content Delivery Network (CDN) that caches content (static and dynamic) at Edge Locations for faster delivery to users. Uses the public internet for the last mile.
+- **AWS Global Accelerator**: Routes traffic to optimal regional endpoints over the AWS global network. It does **not** cache content but provides a pair of static Anycast IP addresses and improves performance for UDP/TCP traffic (e.g., gaming, IoT).
 
 ## Hybrid Connectivity
 

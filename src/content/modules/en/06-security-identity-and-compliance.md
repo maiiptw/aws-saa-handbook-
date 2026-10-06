@@ -17,9 +17,14 @@ Manages access to AWS services and resources securely.
 - **Roles**: Identities with specific permissions, assumable by users, applications, or AWS services (e.g., granting an EC2 instance access to S3). **Never store long-term credentials on EC2 instances; always use Roles.**
 - **Policies**: JSON documents attached to identities (identity-based) or resources (resource-based) defining allowed/denied actions.
 - Principle of Least Privilege: Grant only the permissions required to perform a task.
+- **MFA (Multi-Factor Authentication)**: Always enable for Root accounts and highly privileged users.
+
+### AWS Organizations & SCPs
+- **AWS Organizations**: Centrally manage and govern multiple accounts. Features consolidated billing.
+- **Service Control Policies (SCPs)**: Policies applied at the Organization or OU (Organizational Unit) level that restrict the maximum permissions available to member accounts. (e.g., "Deny all actions unless running in region us-east-1"). SCPs override local IAM policies.
 
 ## Data Protection and Encryption
-- **AWS KMS (Key Management Service)**: Managed service for creating and controlling cryptographic keys used to encrypt data.
+- **AWS KMS (Key Management Service)**: Managed service for creating and controlling cryptographic keys used to encrypt data. Often uses **Envelope Encryption** (encrypting a data key with a master key).
 - **AWS CloudHSM**: Cloud-based hardware security module (HSM) for managing encryption keys, providing dedicated, single-tenant, FIPS 140-2 Level 3 validated hardware. (Customer has exclusive control over the keys, unlike KMS).
 - **Amazon Macie**: Uses machine learning to discover, classify, and protect sensitive data (e.g., PII) stored in S3.
 
@@ -33,6 +38,7 @@ Manages access to AWS services and resources securely.
 - **AWS Security Hub**: Provides a comprehensive view of your security state across AWS and helps check compliance against security industry standards and best practices.
 
 ## Exam Traps
+- **SCPs vs IAM Policies**: SCPs do not grant permissions; they act as a "filter" or boundary defining maximum allowed actions for an entire account or OU.
 - **IAM Roles vs Users**: Always choose IAM Roles for applications running on EC2 needing access to AWS services, never embed user credentials (access keys).
 - **KMS vs CloudHSM**: If a question requires FIPS 140-2 Level 3 compliance or exclusive control over the hardware encryption module, choose CloudHSM.
 - **WAF vs Network Firewall**: WAF is for Layer 7 (HTTP/HTTPS) web application protection. Network Firewall is for Layer 3/4 VPC-wide protection.

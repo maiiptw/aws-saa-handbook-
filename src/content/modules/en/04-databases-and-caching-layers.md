@@ -23,6 +23,7 @@ A MySQL and PostgreSQL-compatible relational database built for the cloud.
 - Storage automatically scales up to 128 TB.
 - **Aurora Serverless**: On-demand, auto-scaling configuration for unpredictable or intermittent workloads.
 - **Aurora Global Database**: Spans multiple AWS regions, providing low-latency global reads and disaster recovery from region-wide outages.
+- **Aurora Multi-Master**: Every node in the cluster is a read/write node. Ensures high availability for write operations.
 
 ## NoSQL Databases
 

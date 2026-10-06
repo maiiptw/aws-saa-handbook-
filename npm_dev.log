@@ -29,3 +29,16 @@
 08:07:24 [200] /en/modules/02-compute-scaling-and-load-balancing 307ms
 08:08:47 [200] /en/modules/01-networking-and-hybrid-connectivity 21ms
 08:09:51 [200] /en/modules/03-storage-and-data-lifecycle 15ms
+16:06:19 [watch] /src/styles/global.css
+16:08:23 [watch] /src/styles/global.css
+16:09:00 [watch] /src/styles/global.css
+16:12:33 [vite] program reload
+16:14:33 [vite] program reload
+16:15:20 [vite] program reload
+16:16:50 [vite] program reload
+16:19:05 [vite] program reload
+16:22:55 [vite] program reload
+16:25:55 [vite] program reload
+16:27:22 [vite] program reload
+16:28:13 [vite] program reload
+16:29:06 [vite] program reload

@@ -25,6 +25,11 @@ Enables governance, compliance, operational auditing, and risk auditing of your 
 - Crucial for security investigations and troubleshooting "who did what".
 - **CloudTrail Insights**: Helps users identify and respond to unusual activity associated with API calls and API error rates.
 
+### Cost Management
+- **AWS Cost Explorer**: Visualize, understand, and manage your AWS costs and usage over time. Used to analyze past spending.
+- **AWS Budgets**: Set custom budgets to track your cost and usage. Can send alerts via SNS when you exceed (or are forecasted to exceed) your budgeted amount.
+- **Savings Plans vs Reserved Instances (RIs)**: Both offer significant discounts (up to 72%) compared to On-Demand. RIs are tied to specific instance types and regions. Savings Plans are more flexible, applying discounts based on a commitment to a consistent amount of usage (measured in $/hour).
+
 ## Governance and Compliance
 
 ### AWS Config
