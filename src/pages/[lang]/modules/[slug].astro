@@ -1,0 +1,60 @@
+---
+import { getCollection, render } from 'astro:content';
+import ModuleLayout from '../../../layouts/ModuleLayout.astro';
+import AlbFailoverSim from '../../../components/interactive/AlbFailoverSim';
+
+export async function getStaticPaths() {
+  const modules = await getCollection('modules');
+
+  return modules.map(entry => {
+    const [lang, slug] = entry.id.split('/');
+    // Extract base slug without extension
+    const baseSlug = slug.replace('.md', '').replace('.mdx', '');
+
+    return {
+      params: { lang, slug: baseSlug },
+      props: { entry },
+    };
+  });
+}
+
+const { entry } = Astro.props;
+const { lang } = Astro.params;
+const { Content, headings } = await render(entry);
+
+import VpcPeeringSim from '../../../components/interactive/VpcPeeringSim';
+import S3StorageClassSim from '../../../components/interactive/S3StorageClassSim';
+
+// Special condition to render the interactive component in the Route53/ALB module
+const isLoadBalancingModule = entry.id.includes('02-compute-scaling-and-load-balancing');
+const isNetworkingModule = entry.id.includes('01-networking-and-hybrid-connectivity');
+const isStorageModule = entry.id.includes('03-storage-and-data-lifecycle');
+---
+
+<ModuleLayout frontmatter={entry.data} headings={headings} lang={lang}>
+  <Content />
+
+  {isNetworkingModule && (
+    <div class="mt-8">
+      <h2 id="interactive-simulation">การจำลอง (Interactive Simulation)</h2>
+      <p>ทดสอบการเชื่อมต่อ VPC Peering ระหว่าง 2 VPC ข้ามระบบเครือข่ายภายในของ AWS:</p>
+      <VpcPeeringSim client:visible />
+    </div>
+  )}
+
+  {isLoadBalancingModule && (
+    <div class="mt-8">
+      <h2 id="interactive-simulation">การจำลอง (Interactive Simulation)</h2>
+      <p>ทดสอบการสลับเซิร์ฟเวอร์สำรอง (Failover) ของ ALB เมื่อ Availability Zone เกิดขัดข้อง:</p>
+      <AlbFailoverSim client:visible />
+    </div>
+  )}
+
+  {isStorageModule && (
+    <div class="mt-8">
+      <h2 id="interactive-simulation">การจำลอง (Interactive Simulation)</h2>
+      <p>ทดสอบการย้ายข้อมูลผ่าน S3 Lifecycle Policy ข้าม Storage Classes ต่างๆ ตามเวลาที่ผ่านไป:</p>
+      <S3StorageClassSim client:visible />
+    </div>
+  )}
+</ModuleLayout>

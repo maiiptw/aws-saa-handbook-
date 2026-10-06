@@ -1,0 +1,165 @@
+---
+import '../styles/global.css';
+
+const { title, lang = 'th' } = Astro.props;
+const otherLang = lang === 'th' ? 'en' : 'th';
+const urlPath = Astro.url.pathname.replace(`/${lang}`, '') || '/';
+---
+
+<html lang={lang} class="scroll-smooth">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{title} | AWS SAA Handbook</title>
+
+    <script is:inline>
+      // Apply dark mode on initial load
+      const theme = (() => {
+        if (typeof localStorage !== 'undefined' && localStorage.getItem('theme')) {
+          return localStorage.getItem('theme');
+        }
+        if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+          return 'dark';
+        }
+        return 'light';
+      })();
+
+      if (theme === 'dark') {
+        document.documentElement.classList.add('dark');
+      } else {
+        document.documentElement.classList.remove('dark');
+      }
+    </script>
+  </head>
+  <body class="min-h-screen flex flex-col transition-colors duration-300">
+    <header class="sticky top-0 z-50 bg-white/90 dark:bg-gray-900/90 backdrop-blur-md border-b border-gray-200 dark:border-gray-800">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between items-center h-16">
+
+          <div class="flex items-center">
+            <button id="mobile-menu-btn" class="md:hidden mr-4 p-2 text-gray-600 dark:text-gray-300 hover:text-aws-orange focus:outline-none">
+              <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+              </svg>
+            </button>
+            <a href={`/${lang}`} class="flex items-center gap-2">
+              <span class="text-2xl font-bold text-aws-squid-ink dark:text-white">AWS <span class="text-aws-orange">SAA</span></span>
+              <span class="hidden sm:inline-block text-sm font-medium text-gray-500 border-l border-gray-300 ml-2 pl-2">Handbook</span>
+            </a>
+          </div>
+
+          <nav class="hidden md:flex space-x-8">
+            <a href={`/${lang}`} class="text-gray-700 dark:text-gray-300 hover:text-aws-orange px-3 py-2 text-sm font-medium transition-colors">Home</a>
+            <a href={`/${lang}/modules`} class="text-gray-700 dark:text-gray-300 hover:text-aws-orange px-3 py-2 text-sm font-medium transition-colors">Modules</a>
+            <a href={`/${lang}/cheatsheet`} class="text-gray-700 dark:text-gray-300 hover:text-aws-orange px-3 py-2 text-sm font-medium transition-colors">Cheatsheet</a>
+          </nav>
+
+          <div class="flex items-center gap-4">
+            <button id="theme-toggle" class="p-2 rounded-lg bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors" aria-label="Toggle dark mode">
+              <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+              <svg id="theme-toggle-light-icon" class="hidden w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path></svg>
+            </button>
+            <a href={`/${otherLang}${urlPath}`} class="px-3 py-1.5 rounded-md text-sm font-medium border border-gray-300 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
+              {lang === 'th' ? 'EN' : 'TH'}
+            </a>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Mobile Drawer Overlay -->
+    <div id="mobile-menu-overlay" class="fixed inset-0 bg-black/50 z-40 hidden opacity-0 transition-opacity duration-300"></div>
+
+    <!-- Mobile Drawer Sidebar -->
+    <div id="mobile-menu-drawer" class="fixed inset-y-0 left-0 w-64 bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-800 z-50 transform -translate-x-full transition-transform duration-300 ease-in-out flex flex-col">
+      <div class="h-16 flex items-center justify-between px-4 border-b border-gray-200 dark:border-gray-800">
+        <span class="text-xl font-bold text-aws-squid-ink dark:text-white">AWS <span class="text-aws-orange">SAA</span></span>
+        <button id="close-menu-btn" class="p-2 text-gray-500 hover:text-aws-orange focus:outline-none">
+          <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+      <nav class="flex flex-col flex-grow py-4">
+        <a href={`/${lang}`} class="px-6 py-3 text-gray-800 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-aws-orange border-l-4 border-transparent hover:border-aws-orange transition-all">Home</a>
+        <a href={`/${lang}/modules`} class="px-6 py-3 text-gray-800 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-aws-orange border-l-4 border-transparent hover:border-aws-orange transition-all">Modules</a>
+        <a href={`/${lang}/cheatsheet`} class="px-6 py-3 text-gray-800 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-aws-orange border-l-4 border-transparent hover:border-aws-orange transition-all">Cheatsheet</a>
+      </nav>
+    </div>
+
+    <main class="flex-grow w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 relative">
+      <slot />
+    </main>
+
+    <footer class="bg-gray-50 dark:bg-black border-t border-gray-200 dark:border-gray-800 mt-auto">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <p class="text-center text-sm text-gray-500">© {new Date().getFullYear()} AWS SAA Handbook. Not affiliated with Amazon Web Services.</p>
+      </div>
+    </footer>
+
+    <script is:inline>
+      // Theme Toggle Logic
+      const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+      const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+      const themeToggleBtn = document.getElementById('theme-toggle');
+
+      if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+          themeToggleLightIcon.classList.remove('hidden');
+      } else {
+          themeToggleDarkIcon.classList.remove('hidden');
+      }
+
+      themeToggleBtn.addEventListener('click', function() {
+          themeToggleDarkIcon.classList.toggle('hidden');
+          themeToggleLightIcon.classList.toggle('hidden');
+
+          if (localStorage.getItem('theme')) {
+              if (localStorage.getItem('theme') === 'light') {
+                  document.documentElement.classList.add('dark');
+                  localStorage.setItem('theme', 'dark');
+              } else {
+                  document.documentElement.classList.remove('dark');
+                  localStorage.setItem('theme', 'light');
+              }
+          } else {
+              if (document.documentElement.classList.contains('dark')) {
+                  document.documentElement.classList.remove('dark');
+                  localStorage.setItem('theme', 'light');
+              } else {
+                  document.documentElement.classList.add('dark');
+                  localStorage.setItem('theme', 'dark');
+              }
+          }
+      });
+
+      // Mobile Menu Logic
+      const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+      const closeMenuBtn = document.getElementById('close-menu-btn');
+      const mobileMenuDrawer = document.getElementById('mobile-menu-drawer');
+      const mobileMenuOverlay = document.getElementById('mobile-menu-overlay');
+
+      function openMenu() {
+        mobileMenuOverlay.classList.remove('hidden');
+        // Small delay to allow display:block to apply before changing opacity
+        setTimeout(() => {
+          mobileMenuOverlay.classList.remove('opacity-0');
+          mobileMenuDrawer.classList.remove('-translate-x-full');
+        }, 10);
+      }
+
+      function closeMenu() {
+        mobileMenuDrawer.classList.add('-translate-x-full');
+        mobileMenuOverlay.classList.add('opacity-0');
+        setTimeout(() => {
+          mobileMenuOverlay.classList.add('hidden');
+        }, 300); // match transition duration
+      }
+
+      mobileMenuBtn.addEventListener('click', openMenu);
+      closeMenuBtn.addEventListener('click', closeMenu);
+      mobileMenuOverlay.addEventListener('click', closeMenu);
+    </script>
+  </body>
+</html>

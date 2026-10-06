@@ -1,0 +1,38 @@
+[
+  {
+    "id": "1",
+    "module": "EC2 & Auto Scaling",
+    "topic": "Scaling vs Provisioning",
+    "trap_th": "คิดว่าการใช้ Auto Scaling จะแก้ปัญหา performance ได้ทุกกรณี",
+    "trap_en": "Assuming Auto Scaling solves all performance issues",
+    "decision_th": "ถ้าเป็นปัญหาคอขวดที่ DB ให้ Scale DB ก่อน (เช่น Read Replica), ถ้าเป็นที่ CPU ค่อยใช้ ASG Scale-out",
+    "decision_en": "If DB bottleneck, scale DB first (e.g., Read Replica). If CPU, use ASG Scale-out."
+  },
+  {
+    "id": "2",
+    "module": "S3 & Storage",
+    "topic": "Data Retrieval",
+    "trap_th": "เลือก Glacier สำหรับข้อมูลที่ต้องดึงใช้งานบ่อย ๆ เพื่อประหยัดเงิน",
+    "trap_en": "Choosing Glacier for frequently accessed data to save money",
+    "decision_th": "ใช้ S3 Standard-IA สำหรับข้อมูลที่ไม่ค่อยได้ใช้แต่ต้องดึงเร็ว, ใช้ Glacier สำหรับ Archive (รอนาน 1-5 ชม. ขึ้นไป)",
+    "decision_en": "Use S3 Standard-IA for infrequent but rapid access. Use Glacier for archives (wait 1-5 hours+)."
+  },
+  {
+    "id": "3",
+    "module": "VPC & Networking",
+    "topic": "NAT Gateway vs Bastion Host",
+    "trap_th": "สับสนระหว่างการให้อินเทอร์เน็ตกับ Private Subnet และการ SSH เข้า Private Subnet",
+    "trap_en": "Confusing granting internet access to Private Subnet with SSH access to Private Subnet",
+    "decision_th": "NAT Gateway ใช้สำหรับให้ออกเน็ตได้, Bastion Host (หรือ SSM Session Manager) ใช้สำหรับการ Remote เข้าไปจัดการ",
+    "decision_en": "NAT Gateway is for outbound internet. Bastion Host (or SSM) is for remote management access."
+  },
+  {
+    "id": "4",
+    "module": "Databases",
+    "topic": "RDS Multi-AZ vs Read Replicas",
+    "trap_th": "ใช้ Multi-AZ เพื่อเพิ่มประสิทธิภาพการอ่าน (Read Performance)",
+    "trap_en": "Using Multi-AZ to increase read performance",
+    "decision_th": "Multi-AZ ใช้สำหรับ High Availability (Failover), Read Replica ใช้สำหรับเพิ่ม Read Performance",
+    "decision_en": "Multi-AZ is for High Availability (Failover). Read Replicas are for scaling read performance."
+  }
+]
