@@ -12,6 +12,17 @@ const modulesCollection = defineCollection({
   }),
 });
 
+const servicesCollection = defineCollection({
+  loader: glob({ pattern: "**/*.md", base: "src/content/services" }),
+  schema: z.object({
+    title: z.string(),
+    serviceName: z.string(),
+    category: z.enum(["Compute", "Storage", "Database", "Networking", "Security", "Other"]),
+    description: z.string(),
+  }),
+});
+
 export const collections = {
   modules: modulesCollection,
+  services: servicesCollection,
 };

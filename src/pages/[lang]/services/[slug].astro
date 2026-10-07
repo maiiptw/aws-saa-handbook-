@@ -1,0 +1,62 @@
+---
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import { ArrowLeft } from 'lucide-react';
+
+export async function getStaticPaths() {
+  const services = await getCollection('services');
+
+  return services.map(service => {
+    // The id is like "en/ec2" or "th/s3". We need to split it to get lang and slug.
+    const [lang, slug] = service.id.split('/');
+    return {
+      params: { lang, slug },
+      props: { service },
+    };
+  });
+}
+
+const { lang, slug } = Astro.params;
+const { service } = Astro.props;
+const { Content } = await render(service);
+
+const isEn = lang === 'en';
+const backText = isEn ? "Back to Services" : "กลับไปหน้าบริการ AWS";
+---
+
+<BaseLayout title={`${service.data.title} | AWS Services`} lang={lang}>
+  <div class="max-w-4xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
+
+    <a href={`/${lang}/services`} class="inline-flex items-center text-aws-orange hover:text-[#d97706] font-medium mb-8 transition-colors">
+      <ArrowLeft className="w-4 h-4 mr-2" />
+      {backText}
+    </a>
+
+    <header class="mb-10">
+      <div class="flex items-center gap-3 mb-4">
+        <span class="px-3 py-1 bg-aws-orange/10 text-aws-orange font-bold text-sm rounded-full border border-aws-orange/20">
+          {service.data.category}
+        </span>
+        <span class="text-gray-500 dark:text-gray-400 font-mono text-sm">
+          {service.data.serviceName}
+        </span>
+      </div>
+      <h1 class="text-4xl sm:text-5xl font-extrabold text-gray-900 dark:text-white leading-tight mb-4">
+        {service.data.title}
+      </h1>
+      <p class="text-xl text-gray-600 dark:text-gray-300">
+        {service.data.description}
+      </p>
+    </header>
+
+    <article class="prose prose-lg md:prose-xl dark:prose-invert prose-headings:font-bold prose-a:text-aws-orange hover:prose-a:text-[#d97706] prose-img:rounded-xl max-w-none leading-relaxed">
+      <Content />
+    </article>
+
+    <div class="mt-16 pt-8 border-t border-gray-200 dark:border-gray-800 flex justify-between items-center">
+      <a href={`/${lang}/services`} class="text-gray-500 hover:text-aws-orange font-medium transition-colors">
+        {isEn ? "← Browse more services" : "← ดูบริการอื่นๆ"}
+      </a>
+    </div>
+  </div>
+</BaseLayout>

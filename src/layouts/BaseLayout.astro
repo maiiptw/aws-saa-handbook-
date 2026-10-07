@@ -56,9 +56,10 @@ const urlPath = Astro.url.pathname.replace(`/${lang}`, '') || '/';
           </div>
 
           <nav class="hidden md:flex space-x-8">
-            <a href={`/${lang}`} class="text-gray-700 dark:text-gray-300 hover:text-aws-orange px-3 py-2 text-sm font-medium transition-colors">Home</a>
-            <a href={`/${lang}/modules`} class="text-gray-700 dark:text-gray-300 hover:text-aws-orange px-3 py-2 text-sm font-medium transition-colors">Modules</a>
-            <a href={`/${lang}/cheatsheet`} class="text-gray-700 dark:text-gray-300 hover:text-aws-orange px-3 py-2 text-sm font-medium transition-colors">Cheatsheet</a>
+            <a href={`/${lang}`} class="text-gray-700 dark:text-gray-300 hover:text-aws-orange px-3 py-2 text-sm font-medium transition-colors">{lang === 'th' ? 'หน้าแรก' : 'Home'}</a>
+            <a href={`/${lang}/modules`} class="text-gray-700 dark:text-gray-300 hover:text-aws-orange px-3 py-2 text-sm font-medium transition-colors">{lang === 'th' ? 'บทเรียน' : 'Modules'}</a>
+            <a href={`/${lang}/services`} class="text-gray-700 dark:text-gray-300 hover:text-aws-orange px-3 py-2 text-sm font-medium transition-colors">{lang === 'th' ? 'บริการ AWS' : 'Services'}</a>
+            <a href={`/${lang}/cheatsheet`} class="text-gray-700 dark:text-gray-300 hover:text-aws-orange px-3 py-2 text-sm font-medium transition-colors">{lang === 'th' ? 'สรุปเนื้อหา' : 'Cheatsheet'}</a>
           </nav>
 
           <div class="flex items-center gap-4">
@@ -88,9 +89,10 @@ const urlPath = Astro.url.pathname.replace(`/${lang}`, '') || '/';
         </button>
       </div>
       <nav class="flex flex-col flex-grow py-4">
-        <a href={`/${lang}`} class="px-6 py-3 text-gray-800 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-aws-orange border-l-4 border-transparent hover:border-aws-orange transition-all">Home</a>
-        <a href={`/${lang}/modules`} class="px-6 py-3 text-gray-800 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-aws-orange border-l-4 border-transparent hover:border-aws-orange transition-all">Modules</a>
-        <a href={`/${lang}/cheatsheet`} class="px-6 py-3 text-gray-800 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-aws-orange border-l-4 border-transparent hover:border-aws-orange transition-all">Cheatsheet</a>
+        <a href={`/${lang}`} class="px-6 py-3 text-gray-800 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-aws-orange border-l-4 border-transparent hover:border-aws-orange transition-all">{lang === 'th' ? 'หน้าแรก' : 'Home'}</a>
+        <a href={`/${lang}/modules`} class="px-6 py-3 text-gray-800 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-aws-orange border-l-4 border-transparent hover:border-aws-orange transition-all">{lang === 'th' ? 'บทเรียน' : 'Modules'}</a>
+        <a href={`/${lang}/services`} class="px-6 py-3 text-gray-800 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-aws-orange border-l-4 border-transparent hover:border-aws-orange transition-all">{lang === 'th' ? 'บริการ AWS' : 'Services'}</a>
+        <a href={`/${lang}/cheatsheet`} class="px-6 py-3 text-gray-800 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-aws-orange border-l-4 border-transparent hover:border-aws-orange transition-all">{lang === 'th' ? 'สรุปเนื้อหา' : 'Cheatsheet'}</a>
       </nav>
     </div>
 

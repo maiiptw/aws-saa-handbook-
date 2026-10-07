@@ -2,7 +2,6 @@
 > galactic-gravity@0.0.1 preview
 > astro preview
 
-Port 4321 is in use, trying another one...
- astro  v7.3.5 ready in 78 ms
-┃ Local    http://localhost:4322/
+ astro  v7.3.5 ready in 45 ms
+┃ Local    http://localhost:4321/
 ┃ Network  use --host to expose

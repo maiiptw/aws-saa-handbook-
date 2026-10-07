@@ -46,3 +46,10 @@
 12:03:56 [watch] /src/styles/global.css
 12:04:47 [watch] /src/styles/global.css
 16:54:48 [vite] program reload
+20:03:18 [watch] /src/styles/global.css
+20:03:18 [content] Syncing content
+20:03:18 [content] Content config changed
+20:03:18 [content] Clearing content store
+20:03:18 [WARN] [glob-loader] The base directory "/app/src/content/services/" does not exist.
+20:03:20 [content] Synced content
+20:06:54 [watch] /src/styles/global.css
