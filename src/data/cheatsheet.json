@@ -1,7 +1,7 @@
 [
   {
     "id": "1",
-    "module": "EC2 & Auto Scaling",
+    "module": "Compute",
     "topic": "Scaling vs Provisioning",
     "trap_th": "คิดว่าการใช้ Auto Scaling จะแก้ปัญหา performance ได้ทุกกรณี",
     "trap_en": "Assuming Auto Scaling solves all performance issues",
@@ -10,16 +10,16 @@
   },
   {
     "id": "2",
-    "module": "S3 & Storage",
-    "topic": "Data Retrieval",
-    "trap_th": "เลือก Glacier สำหรับข้อมูลที่ต้องดึงใช้งานบ่อย ๆ เพื่อประหยัดเงิน",
+    "module": "Storage",
+    "topic": "S3 Data Retrieval",
+    "trap_th": "เลือก Glacier สำหรับข้อมูลที่ต้องดึงใช้งานบ่อยๆ เพื่อประหยัดเงิน",
     "trap_en": "Choosing Glacier for frequently accessed data to save money",
     "decision_th": "ใช้ S3 Standard-IA สำหรับข้อมูลที่ไม่ค่อยได้ใช้แต่ต้องดึงเร็ว, ใช้ Glacier สำหรับ Archive (รอนาน 1-5 ชม. ขึ้นไป)",
     "decision_en": "Use S3 Standard-IA for infrequent but rapid access. Use Glacier for archives (wait 1-5 hours+)."
   },
   {
     "id": "3",
-    "module": "VPC & Networking",
+    "module": "Networking",
     "topic": "NAT Gateway vs Bastion Host",
     "trap_th": "สับสนระหว่างการให้อินเทอร์เน็ตกับ Private Subnet และการ SSH เข้า Private Subnet",
     "trap_en": "Confusing granting internet access to Private Subnet with SSH access to Private Subnet",
@@ -34,5 +34,86 @@
     "trap_en": "Using Multi-AZ to increase read performance",
     "decision_th": "Multi-AZ ใช้สำหรับ High Availability (Failover), Read Replica ใช้สำหรับเพิ่ม Read Performance",
     "decision_en": "Multi-AZ is for High Availability (Failover). Read Replicas are for scaling read performance."
+  },
+  {
+    "id": "5",
+    "module": "Networking",
+    "topic": "VPC Peering vs Transit Gateway",
+    "trap_th": "ใช้ VPC Peering เชื่อมต่อ VPC 100+ วงเข้าด้วยกัน",
+    "trap_en": "Using VPC Peering to connect 100+ VPCs together",
+    "decision_th": "VPC Peering ไม่มี Transitive Routing (เชื่อมต่อแบบใยแมงมุมจัดการยาก) หากเชื่อมต่อหลายวงให้ใช้ Transit Gateway เพื่อรวมศูนย์เป็น Hub-and-Spoke",
+    "decision_en": "VPC Peering lacks transitive routing. For many VPCs, use Transit Gateway (Hub-and-Spoke)."
+  },
+  {
+    "id": "6",
+    "module": "Networking",
+    "topic": "CloudFront vs Global Accelerator",
+    "trap_th": "เลือก Global Accelerator สำหรับการแคชรูปภาพหรือวิดีโอ (Static Content)",
+    "trap_en": "Choosing Global Accelerator to cache images or videos (Static Content)",
+    "decision_th": "หากโจทย์คือ \"แคชเนื้อหาเว็บ/รูปภาพ\" เลือก CloudFront; หากโจทย์คือ \"ลด Latency โดยใช้ IP แบบคงที่ (Static IP) หรือแอปพลิเคชันที่ไม่ใช่ HTTP/HTTPS (เช่น UDP/TCP เกมมิ่ง)\" เลือก Global Accelerator",
+    "decision_en": "For caching static content, choose CloudFront. For non-HTTP (TCP/UDP) or static IP requirements, use Global Accelerator."
+  },
+  {
+    "id": "7",
+    "module": "Databases",
+    "topic": "Aurora Multi-Master vs RDS Multi-AZ",
+    "trap_th": "เลือก RDS Multi-AZ เมื่อแอปพลิเคชันต้องการเขียนข้อมูลหลายๆ โหนดพร้อมกัน",
+    "trap_en": "Choosing RDS Multi-AZ when the application needs to write to multiple nodes concurrently",
+    "decision_th": "RDS Multi-AZ มี Node หลักเพียงตัวเดียวสำหรับเขียน (Write) ถ้าโจทย์ต้องการ Continuous Availability และเขียนได้หลายๆ โหนดพร้อมกัน ให้เลือก Aurora Multi-Master",
+    "decision_en": "RDS Multi-AZ only has one active write node. If concurrent writes across nodes are needed, choose Aurora Multi-Master."
+  },
+  {
+    "id": "8",
+    "module": "Integration",
+    "topic": "Kinesis vs SQS",
+    "trap_th": "ใช้ SQS เพื่อทำ Real-time Analytics หรือต้องการอ่านข้อมูลซ้ำหลายๆ รอบ",
+    "trap_en": "Using SQS for Real-time Analytics or when data needs to be consumed multiple times",
+    "decision_th": "SQS เมื่ออ่านและลบแล้ว ข้อมูลจะหายไป (Decoupling) แต่ Kinesis ข้อมูลจะยังอยู่ตาม Retention Period ทำให้หลายแอปพลิเคชันมาอ่านซ้ำได้ เหมาะสำหรับ Real-time streaming/analytics",
+    "decision_en": "SQS deletes messages after processing. Kinesis retains data, allowing multiple consumers and real-time analytics."
+  },
+  {
+    "id": "9",
+    "module": "Security",
+    "topic": "SCPs vs IAM Policies",
+    "trap_th": "คิดว่าการใช้ SCP เป็นการ 'อนุญาต (Grant)' สิทธิ์ให้กับผู้ใช้",
+    "trap_en": "Thinking SCPs 'grant' permissions to users",
+    "decision_th": "SCP ทำหน้าที่เป็น 'ตัวกรอง (Filter)' กำหนดขอบเขตสูงสุดเท่านั้น ผู้ใช้จะใช้งานได้ต้องมี IAM Policy อนุญาตอีกชั้นหนึ่ง (เช่น SCP ห้ามสร้างนอก us-east-1 ถึง IAM ให้สิทธิ์ FullAccess ก็สร้างไม่ได้)",
+    "decision_en": "SCPs only set boundaries (maximum permissions). Users still need IAM Policies to actually grant the permission."
+  },
+  {
+    "id": "10",
+    "module": "Operations",
+    "topic": "Parameter Store vs Secrets Manager",
+    "trap_th": "เลือกใช้ Parameter Store สำหรับการหมุนเวียนรหัสผ่านฐานข้อมูลแบบอัตโนมัติ (Automatic Rotation)",
+    "trap_en": "Choosing Parameter Store for automatic database password rotation",
+    "decision_th": "Secrets Manager มีฟีเจอร์ Automatic Rotation ในตัว (ใช้คู่กับ Lambda) เหมาะสำหรับรหัสผ่าน DB; ส่วน Parameter Store เหมาะกับคอนฟิกทั่วไปหรือรหัสความลับที่ไม่ได้ต้องการเปลี่ยนอัตโนมัติ",
+    "decision_en": "Secrets Manager has built-in automatic rotation. Parameter Store is better for general config or non-rotating secrets."
+  },
+  {
+    "id": "11",
+    "module": "Operations",
+    "topic": "Cost Explorer vs Budgets",
+    "trap_th": "ใช้ Cost Explorer เพื่อส่งแจ้งเตือนเมื่อค่าใช้จ่ายพุ่งสูงเกินกำหนดแบบทันทีทันใด",
+    "trap_en": "Using Cost Explorer to send immediate alerts when costs spike",
+    "decision_th": "Cost Explorer ใช้สำหรับ 'ดูแนวโน้มและวิเคราะห์' หากต้องการ 'แจ้งเตือน (Alerts)' ทันทีเมื่อถึงขีดจำกัดงบประมาณ ให้เลือก AWS Budgets",
+    "decision_en": "Cost Explorer is for analysis and forecasting. AWS Budgets is for setting thresholds and sending Alerts."
+  },
+  {
+    "id": "12",
+    "module": "Operations",
+    "topic": "Savings Plans vs Reserved Instances",
+    "trap_th": "เลือก Standard Reserved Instances (RIs) เมื่อโจทย์ระบุว่า 'อาจจะมีการเปลี่ยนประเภท Instance (Family) หรือย้าย Region ในอนาคต'",
+    "trap_en": "Choosing Standard RIs when requirements say 'instance families or regions might change'",
+    "decision_th": "Standard RIs ยึดติดกับ Instance Family การที่จะได้ทั้งส่วนลดและความยืดหยุ่น (เปลี่ยน Family, Region, OS ได้) ต้องเลือก Compute Savings Plans",
+    "decision_en": "Standard RIs lock you into an instance family. For both discounts and maximum flexibility (change region/family), choose Compute Savings Plans."
+  },
+  {
+    "id": "13",
+    "module": "Networking",
+    "topic": "VPC Endpoint vs NAT Gateway",
+    "trap_th": "ใช้ NAT Gateway และ Internet Gateway เพื่อให้ EC2 ใน Private Subnet ดึงข้อมูลจาก Amazon S3",
+    "trap_en": "Using NAT Gateway and IGW to allow EC2 in Private Subnet to access Amazon S3",
+    "decision_th": "แม้ NAT Gateway จะทำได้ แต่ไม่ปลอดภัยและเสียค่า Data transfer หากโจทย์ต้องการเข้าถึง S3 หรือ DynamoDB แบบส่วนตัว (ไม่ผ่านเน็ตสาธารณะ) คำตอบที่ถูกต้องที่สุดคือ VPC Endpoint (Gateway Endpoint)",
+    "decision_en": "NAT Gateway works but uses public internet. To access S3/DynamoDB privately and securely, use a VPC Gateway Endpoint."
   }
 ]
