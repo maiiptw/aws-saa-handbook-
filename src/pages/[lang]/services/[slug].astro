@@ -2,6 +2,8 @@
 import { getCollection, render } from 'astro:content';
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import { ArrowLeft } from 'lucide-react';
+import AsgSim from '../../../components/interactive/AsgSim';
+import CloudFrontSim from '../../../components/interactive/CloudFrontSim';
 
 export async function getStaticPaths() {
   const services = await getCollection('services');
@@ -52,6 +54,9 @@ const backText = isEn ? "Back to Services" : "กลับไปหน้าบ�
     <article class="prose prose-lg md:prose-xl dark:prose-invert prose-headings:font-bold prose-a:text-aws-orange hover:prose-a:text-[#d97706] prose-img:rounded-xl max-w-none leading-relaxed">
       <Content />
     </article>
+
+    {slug === 'asg' && <AsgSim client:visible />}
+    {slug === 'cloudfront' && <CloudFrontSim client:visible />}
 
     <div class="mt-16 pt-8 border-t border-gray-200 dark:border-gray-800 flex justify-between items-center">
       <a href={`/${lang}/services`} class="text-gray-500 hover:text-aws-orange font-medium transition-colors">

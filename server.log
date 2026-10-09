@@ -1,7 +1,5 @@
 
-> galactic-gravity@0.0.1 preview
-> astro preview
+> galactic-gravity@0.0.1 dev
+> astro dev
 
- astro  v7.3.5 ready in 39 ms
-┃ Local    http://localhost:4321/
-┃ Network  use --host to expose
+sh: 1: astro: not found
